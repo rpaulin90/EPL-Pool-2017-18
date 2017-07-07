@@ -23,12 +23,21 @@ firebase.initializeApp(config);
 
 var admin = require("firebase-admin");
 
-var serviceAccount = require("../admin/epl-pool-firebase-adminsdk-ex8f3-992c6c6878.js");
+//var serviceAccount = require("../admin/epl-pool-firebase-adminsdk-ex8f3-992c6c6878.js");
 
 admin.initializeApp({
-    credential: admin.credential.cert(serviceAccount),
+    credential: admin.credential.cert({
+        projectId: "epl-pool",
+        clientEmail: "firebase-adminsdk-ex8f3@epl-pool.iam.gserviceaccount.com",
+        privateKey: process.env.PRIVATE_KEY
+    }),
     databaseURL: "https://epl-pool.firebaseio.com"
 });
+
+// admin.initializeApp({
+//     credential: admin.credential.cert(serviceAccount),
+//     databaseURL: "https://epl-pool.firebaseio.com"
+// });
 
 
 var database = firebase.database();
