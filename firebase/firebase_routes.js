@@ -45,7 +45,6 @@ var db = admin.database();
 var refAdmin = db.ref();
 var usersRefAdmin = refAdmin.child("users");
 var resultsRefAdmin = refAdmin.child("results");
-var chatAdmin = refAdmin.child("chat");
 
 /////////// ADMIN STUFF ////////////
 
@@ -221,15 +220,6 @@ module.exports = function(app) {
 
         });
         res.json(req.body);
-    });
-
-    app.post("/messageSent",function(req,res){
-
-        chatAdmin.push({
-            message: req.body.user + ": " + req.body.message
-        });
-
-        res.json("message sent");
     });
 
 };

@@ -41,24 +41,6 @@ $(document).ready(function() {
 
     //var GWArray = ["06/12/2017"];
 
-    /// CHAT STUFF ///
-
-    var scrolled = false;
-
-    function updateScroll(){
-        if(!scrolled){
-            var element = document.getElementById("chat");
-            element.scrollTop = element.scrollHeight;
-        }
-    }
-
-    $("#chat").on('scroll', function(){
-        scrolled=true;
-    });
-
-
-    /// CHAT STUFF ENDS ///
-
     currentDate = moment().format('LT');
     currentTime = moment().format('l');
 
@@ -174,6 +156,7 @@ $(document).ready(function() {
 
                     var row = $("<tr>");
                     var col = $("<td>");
+                    var game_titles = $("<th>");
 
                     var resultHomeDiv = $('<div class="result-cell">');
                     var homeTeam = $('<span>' + response.fixtures[e].homeTeamName + '</span><span class="right floated"> ' + response.fixtures[e].result.goalsHomeTeam + '</span>');
@@ -186,6 +169,7 @@ $(document).ready(function() {
                     col.append(resultAwayDiv);
                     row.append(col);
                     $('#game-results').append(row);
+                    $("#everyone-titles").append(game_titles);
                 }
             }
 
@@ -209,38 +193,35 @@ $(document).ready(function() {
                         }
                     }
 
-                    ////// making the current week's picks section
-                    // if(keyId.picksPerGameWeek[gameWeek - 1][0] === "undefined"){
-                    //     $("#yourPicksCurrent").html("No picks have been selected yet");
-                    // }else {
-                    //     var gameNumModal = 1;
-                    //
-                    //     for (var c = -1; c < keyId.picksPerGameWeek[gameWeek - 1].length; c++) {
-                    //
-                    //         var rowCurrent = $("<tr>");
-                    //
-                    //         if(c === -1){
-                    //
-                    //             var gameTitle = $("<td>Game Number</td>").css("font-weight","bold");
-                    //             var picksTitle = $("<td>Current Selection</td>").css("font-weight","bold");
-                    //             rowCurrent.append(gameTitle);
-                    //             rowCurrent.append(picksTitle);
-                    //             $("#yourPicksCurrent").append(rowCurrent);
-                    //         }else {
-                    //
-                    //             var picksCurrent = $("<td>");
-                    //             var gameCurrent = $("<td>" + gameNumModal + "</td>");
-                    //
-                    //             picksCurrent.html(keyId.picksPerGameWeek[gameWeek - 1][c]);
-                    //
-                    //             rowCurrent.append(gameCurrent);
-                    //             rowCurrent.append(picksCurrent);
-                    //             $("#yourPicksCurrent").append(rowCurrent);
-                    //             gameNumModal++;
-                    //         }
-                    //     }
-                    // }
                 });
+            });
+
+            // EVERYONE'S PICKS
+
+            usersRef.orderByKey().once("value", function (snapshot) {
+                snapshot.forEach(function (childSnapshot) {
+                    var keyId = childSnapshot.val();
+                    var user_row = $("<tr>");
+                    var user_name = $("<td>");
+                    user_name.css("font-weight","bold");
+                    user_name.append(keyId.name);
+                    user_row.append(user_name);
+
+                    if (keyId.picksPerGameWeek[gameWeek - 2][0] === "undefined") {
+                        $("#yourPicks").html("No picks were selected last week");
+                    } else {
+                        for (var l = 0; l < keyId.picksPerGameWeek[gameWeek - 2].length; l++) {
+
+                            var pick = $("<td>");
+
+                            pick.html(keyId.picksPerGameWeek[gameWeek - 2][l]);
+
+                            user_row.append(pick);
+                            $("#everyone-table").append(user_row);
+
+                        }
+                    }
+                })
             });
 
             /// GETTING TIME REMAINING BEFORE PICK SUBMISSION DEADLINE
@@ -436,7 +417,6 @@ $(document).ready(function() {
             $("#loader").removeClass("hidden");
             $("#top-navbar").removeClass("hidden");
             $("#team-name").removeClass("hidden");
-            //$("#chatSection").removeClass("hidden");
             callInfoAPI();
             $("#wrapper").addClass("hide");
             $("body").css('background-image', 'none');
@@ -472,7 +452,6 @@ $(document).ready(function() {
         } else {
             $("#top-navbar").addClass("hidden");
             $("#team-name").addClass("hidden");
-            //$("#chatSection").addClass("hidden");
             $("#wrapper").removeClass("hide");
             //showSignUpBox();
             $("#profilePage").css("display", "none");
@@ -825,10 +804,9 @@ $(document).ready(function() {
         $('#lastWeek-modal').iziModal('open', this); // Do not forget the "this"
     });
 
-    $("#chatNavBtn").on('click', function () {
+    $("#everyoneBtn").on('click', function () {
 
-        $('#chat-modal').iziModal('open', this); // Do not forget the "this"
-        updateScroll();
+        $('#everyone-modal').iziModal('open', this); // Do not forget the "this"
     });
 
     $("#rankingsBtn").on('click', function () {
@@ -862,21 +840,22 @@ $(document).ready(function() {
         autoOpen: false
     });
 
-    $("#chat-modal").iziModal({
-        title: 'Chat',
-        subtitle: 'An online game would not be complete without the option to verbally abuse your opponent',
+    $("#everyone-modal").iziModal({
+        title: "Last week's everyone's picks",
+        subtitle: "Gameweek: " + (gameWeek-1),
         theme: '',
-        headerColor: '#1fa13b',
+        headerColor: '#2a339c',
         overlayColor: 'rgba(0, 0, 0, 0.4)',
         iconColor: '',
         iconClass: null,
-        width: 800,
+        width: 600,
         padding: 0,
         overlayClose: true,
         closeOnEscape: true,
         bodyOverflow: false,
         autoOpen: false
     });
+
 
     $("#rankings-modal").iziModal({
         title: 'Rankings',
@@ -1288,32 +1267,5 @@ $(document).ready(function() {
 
         return tags;
     }
-
-    // CHAT SECTION //
-
-
-    $("#chatBtn").on("click",function(){
-
-        var message = $("#chatInput").val();
-
-        $("#chatInput").val("");
-
-        $.post("/messageSent", {message: message,user: game.name}, function (data) {
-            console.log("message sent");
-
-        });
-
-    });
-
-    database.ref().child("chat").orderByKey().on("child_added",function(snapshot) {
-
-        var newMessage = $("<p>").html(snapshot.val().message);
-
-        $("#chat").append(newMessage);
-
-        updateScroll();
-
-
-    });
 
 });

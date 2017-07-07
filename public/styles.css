@@ -95,6 +95,14 @@ table.ui.very.compact {
   color: white !important;
 }
 
+/* EVERYONE'S PICKS */
+
+#everyone-modal {
+    text-align: center;
+    margin-left: -550px !important;
+    max-width: 1100px !important;
+}
+
 /* LOWER SECTION */
 #clubs {
     margin-top: 40px;
