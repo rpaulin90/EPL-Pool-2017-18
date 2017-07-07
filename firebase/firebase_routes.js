@@ -6,18 +6,14 @@ var path = require("path");
 var nodemailer = require('nodemailer');
 var schedule = require('node-schedule');
 
-//process.env.API_KEY_FIREBASE
-//"AIzaSyBZ1EkdljPhyKZPccbmlsqZxU2bkmqvQnI"
-//process.env.MESSAGING_SENDER_ID_FIREBASE
-//"924014493334"
 
 var config = {
-    apiKey: process.env.API_KEY_FIREBASE,
+    apiKey: "AIzaSyBZ1EkdljPhyKZPccbmlsqZxU2bkmqvQnI",
     authDomain: "epl-pool.firebaseapp.com",
     databaseURL: "https://epl-pool.firebaseio.com",
     projectId: "epl-pool",
     storageBucket: "epl-pool.appspot.com",
-    messagingSenderId: process.env.MESSAGING_SENDER_ID_FIREBASE
+    messagingSenderId: "924014493334"
 };
 firebase.initializeApp(config);
 
