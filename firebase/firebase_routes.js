@@ -6,6 +6,10 @@ var path = require("path");
 var nodemailer = require('nodemailer');
 var schedule = require('node-schedule');
 
+//process.env.API_KEY_FIREBASE
+//"AIzaSyBZ1EkdljPhyKZPccbmlsqZxU2bkmqvQnI"
+//process.env.MESSAGING_SENDER_ID_FIREBASE
+//"924014493334"
 
 var config = {
     apiKey: "AIzaSyBZ1EkdljPhyKZPccbmlsqZxU2bkmqvQnI",
@@ -19,21 +23,12 @@ firebase.initializeApp(config);
 
 var admin = require("firebase-admin");
 
-//var serviceAccount = require("../admin/epl-pool-firebase-adminsdk-ex8f3-992c6c6878.js");
+var serviceAccount = require(path.join(__dirname,"../admin/epl-pool-firebase-adminsdk-ex8f3-992c6c6878.json"));
 
 admin.initializeApp({
-    credential: admin.credential.cert({
-        projectId: "epl-pool",
-        clientEmail: "firebase-adminsdk-ex8f3@epl-pool.iam.gserviceaccount.com",
-        privateKey: process.env.PRIVATE_KEY
-    }),
+    credential: admin.credential.cert(serviceAccount),
     databaseURL: "https://epl-pool.firebaseio.com"
 });
-
-// admin.initializeApp({
-//     credential: admin.credential.cert(serviceAccount),
-//     databaseURL: "https://epl-pool.firebaseio.com"
-// });
 
 
 var database = firebase.database();
