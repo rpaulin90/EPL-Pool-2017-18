@@ -1,0 +1,30 @@
+{
+  "name": "epl-pool-2017-18",
+  "version": "1.0.0",
+  "description": "",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/rpaulin90/epl-pool-2017-18.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/rpaulin90/epl-pool-2017-18/issues"
+  },
+  "homepage": "https://github.com/rpaulin90/epl-pool-2017-18#readme",
+  "dependencies": {
+    "body-parser": "^1.17.2",
+    "express": "^4.15.3",
+    "firebase": "^4.1.3",
+    "firebase-admin": "^5.0.0",
+    "node-schedule": "^1.2.3",
+    "nodemailer": "^4.0.1",
+    "path": "^0.12.7"
+  }
+}

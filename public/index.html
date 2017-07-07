@@ -1,0 +1,396 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <title>EPL Pool</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/izimodal/1.4.2/css/iziModal.min.css">
+    <link rel="stylesheet" href="plugin_CSS.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.2.10/semantic.min.css">
+    <link rel="stylesheet" href="styles.css">
+</head>
+<!-- BODY STARTS -->
+<body>
+
+<div id="wrapper">
+    <div class="ui inverted vertical masthead center aligned segment">
+        <div class="ui text container">
+            <h1 class="ui inverted header">English Premier League Predictions</h1>
+            <h2>How's your knowledge of the Premier League?</h2>
+            <div class="ui huge primary button" data-izimodal-open="modal-custom" id="get-started-button">
+                Log In / Register
+                <i class="right arrow icon"></i>
+            </div>
+        </div>
+    </div>
+    <div class="ui vertical stripe segment">
+        <div class="ui middle aligned stackable grid container">
+            <div class="row">
+                <div class="sixteen wide column">
+                    <h3 class="ui header">Do some ground research with our newsfeed tool</h3>
+                    <img src="images/newsfeedImg.png" alt="image of assisting tables in profile">
+                    <h3 class="ui header">Choose your picks wisely</h3>
+                    <img src="images/picksImg.png" alt="image of assisting tables in profile">
+                    <h3 class="ui header">Track your progress throughout the season</h3>
+                    <img src="images/chartImg.png" alt="image of assisting tables in profile">
+                    <h3 class="ui header">Register today and be the king of the rankings!!!</h3>
+                    <img src="images/rankingsImg.png" alt="image of assisting tables in profile">
+                </div>
+                <!--<div class="six wide right floated column">-->
+                <!--<img src="assets/images/helper-img-2.png" alt="image of assisting tables in profile">-->
+                <!--</div>-->
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- <footer>
+  <h3 id="authors">Made with &#10084; by Ricardo, Domingo, Jaime &amp; Marie</h3>
+</footer> -->
+
+<!-- TOP NAV BAR -->
+<div class="ui fixed stackable inverted menu hidden" id="top-navbar">
+    <div class="ui container">
+        <div class="item" id="logo"><img src="./images/soccer-ball.png" alt=""></div>
+        <div class="item" id="welcome">Welcome</div>
+        <!--<div class="item selectable" id="currentPicksBtn">Current Picks</div>-->
+        <div class="item selectable" id="lastWeeksResultsBtn">Current Week's Picks</div>
+        <div class="item selectable" id="pointsGraph">Weekly Points</div>
+        <div class="item selectable" id="rankingsBtn">Standings</div>
+        <div class="item selectable" id="chatNavBtn">Chat</div>
+        <div class="right menu">
+            <div class="ui item selectable" id="signout-btn">Sign out</div>
+        </div>
+    </div>
+</div>
+
+<div id="loader" class="hidden">
+    <div class="ui active inverted dimmer">
+        <div id="club-loader" class="ui text loader">Loading</div>
+    </div>
+</div>
+
+<!-- IZIMODAL -->
+
+<div id="modal-custom" data-iziModal-group="group1">
+    <button data-iziModal-close class="icon-close">x</button>
+    <header>
+        <a href="" class="active" id="signin">Sign in</a>
+        <a href="" id="goToLogIn">New Account</a>
+        <a href="" id="resetPasswordTab">Reset Password</a>
+        <a href="" id="requirements">Registration Requirements</a>
+    </header>
+    <section>
+        <input type="text" placeholder="Email" id="emailLogIn">
+        <input type="password" placeholder="Password" id="passwordLogIn">
+        <footer>
+            <button data-iziModal-close class="cancel-btn">Cancel</button>
+            <button class="submit" id="logIn">Log in</button>
+        </footer>
+    </section>
+    <section class="hide">
+        <input type="text" placeholder="Name" id="name">
+        <input type="text" placeholder="Team Name" id="teamName">
+        <input type="text" placeholder="Email" id="emailRegistration">
+        <input type="password" placeholder="Password" id="passwordRegistration">
+        <footer>
+            <button data-iziModal-close class="cancel-btn">Cancel</button>
+            <button class="submit" id="signUp">Create Account</button>
+        </footer>
+    </section>
+    <section class="hide">
+        <input type="text" placeholder="Email" id="emailForPasswordReset">
+        <footer>
+            <button data-iziModal-close class="cancel-btn">Cancel</button>
+            <button class="submit" id="resetPassword">Send Reset Password Email</button>
+        </footer>
+    </section>
+    <section class="hide">
+        <div class="ui relaxed divided list" style="color: #8b8b8b">
+            <div class="item">
+                <i class="large soccer middle aligned icon"></i>
+                <div class="content">
+                    Password must be 6 characters or longer
+                </div>
+            </div>
+            <div class="item">
+                <i class="large soccer middle aligned icon"></i>
+                <div class="content">
+                    Email should be a valid email
+                </div>
+            </div>
+            <div class="item">
+                <i class="large soccer middle aligned icon"></i>
+                <div class="content">
+                    Name should be longer than 2 characters
+                </div>
+            </div>
+            <div class="item">
+                <i class="large soccer middle aligned icon"></i>
+                <div class="content">
+                    Team name should be longer than 2 characters
+                </div>
+            </div>
+        </div>
+    </section>
+</div>
+
+<!-- IZIMODAL -->
+
+<div class="ui text container hidden" id="team-name">
+    <h1 class="ui header center aligned">
+    </h1>
+</div>
+<!-- TOP CONTENT: PICKS / RESULTS -->
+<div class="container" id="profilePage" style="display: none">
+    <div class="ui three column stackable grid container">
+        <div class="three wide column"></div>
+        <div class="ten wide column">
+            <div class="ui fluid card">
+                <div class="content card-header">
+                    <div class="header card-label" id="gameweeks-picks-header">
+                        Gameweek's picks
+                    </div>
+                    <div class="meta">Each row represent a game. Select your picks by clicking on the corresponding
+                        result for each game (home team, draw, or away team)
+                        below</div>
+                </div>
+                <div class="content" id="gameweeks-picks-content">
+                    <div class="ui sub header center aligned" id="time-remaining">
+
+                    </div>
+                    <table class="ui very compact small fixed unstackable striped celled table" id="picks-table">
+                        <tbody id="picksContainer">
+
+                        </tbody>
+                    </table>
+                </div>
+                <div class="extra content center aligned">
+                    <button class="ui primary button" id="submitPicks" type="submit">Submit Picks</button>
+                </div>
+            </div>
+        </div>
+        <div class="three wide column"></div>
+    </div>
+</div>
+
+<div id="modal-modifications" style="text-align: center; font-size: 20pt; width: 80%">
+
+    <canvas id="canvas"></canvas>
+</div>
+
+<!-- CHAT SECTION -->
+
+<!--<div class="hidden" id="chatSection">-->
+    <!--<div class="ui raised very padded text container segment" style="margin-top: 20px">-->
+        <!--<h2 class="ui header">Chat</h2>-->
+        <!--<div id="chat"></div>-->
+    <!--</div>-->
+    <!--<div class="ui fluid action input">-->
+        <!--<input type="text" placeholder="Chat some abuse..." id="chatInput">-->
+        <!--<div class="ui button" id="chatBtn">Send Message</div>-->
+    <!--</div>-->
+<!--</div>-->
+
+<!-- LAST WEEK'S RESULTS AND LAST WEEK'S PICKS -->
+
+<div id="lastWeek-modal">
+    <div class="container" id="lastWeeksResultsContainer">
+        <div class="ui two column stackable grid container">
+            <div class="ten wide column">
+                <div class="ui fluid card">
+                    <div class="content card-header">
+                        <div class="header card-label">
+                            Last week's results
+                        </div>
+                    </div>
+                    <div class="content" id="last-weeks-results-content">
+                        <table class="ui very compact small fixed unstackable striped table">
+                            <tbody id="game-results">
+
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            <div class="six wide column">
+                <div class="ui fluid card">
+                    <div class="content card-header">
+                        <div class="header card-label">
+                            Your Picks
+                        </div>
+                    </div>
+                    <div class="content" id="your-picks-content">
+                        <table class="ui very compact small fixed unstackable striped table">
+                            <tbody id="yourPicks">
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="chat-modal">
+    <div class="container">
+        <div class="sixteen wide column">
+            <div class="ui fluid card">
+                <div class="content">
+                    <div id="chat"></div>
+                    <div class="ui fluid action input">
+                        <input type="text" placeholder="Chat some abuse..." id="chatInput">
+                        <div class="ui button" id="chatBtn">Send Message</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- CURRENT WEEK'S RESULTS AND CURRENT WEEK'S PICKS -->
+
+<!--<div id="currentPicks-modal">-->
+    <!--<div class="container">-->
+        <!--<div class="sixteen wide column">-->
+            <!--<div class="ui fluid card">-->
+                <!--<div class="content">-->
+                    <!--<table class="ui very compact small fixed unstackable striped table">-->
+                        <!--<tbody id="yourPicksCurrent" style="text-align: center;">-->
+                        <!--</tbody>-->
+                    <!--</table>-->
+                <!--</div>-->
+            <!--</div>-->
+        <!--</div>-->
+    <!--</div>-->
+<!--</div>-->
+
+<!-- ALERTS FOR PICK SUBMISSION -->
+
+<div id="picks-submitted-successfully"></div>
+<div id="picks-submitted-unsuccessfully"></div>
+
+<!-- RANKINGS TABLE -->
+
+<div id="rankings-modal">
+    <div class="container">
+        <div class="sixteen wide column">
+            <div class="ui fluid card">
+                <div class="content">
+                    <table class="ui very compact small fixed unstackable striped table">
+                        <thead>
+                        <tr>
+                            <th class="one wide center aligned">Position</th>
+                            <th class="one wide center aligned">Week</th>
+                            <th class="four wide center aligned">Team Name</th>
+                            <th class="four wide center aligned">Team Owner</th>
+                            <th class="three wide center aligned">Guesses Submitted</th>
+                            <th class="two wide center aligned">Points This Week</th>
+                            <th class="two wide center aligned">Total Points</th>
+                        </tr>
+                        </thead>
+                        <tbody id="rankings" style="text-align: center;">
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="clubs" class="hidden">
+    <div id="nav-container">
+        <nav class="ui secondary pointing menu" id="club-navbar">
+            <!-- club navigation bar -->
+        </nav>
+    </div>
+    <div id="content-container">
+        <div class="ui three column stackable grid container">
+            <div class="four wide column">
+                <!-- injuries box -->
+                <div class="ui fluid card">
+                    <div class="content card-header">
+                        <div class="header card-label">
+                            Injuries / Suspensions
+                        </div>
+                    </div>
+                    <div class="content" id="injuries-content">
+                        <!-- injuries content -->
+                    </div>
+                </div>
+                <!-- general information box  -->
+                <div class="ui fluid card">
+                    <div class="content card-header">
+                        <div class="header card-label">
+                            Team Information
+                        </div>
+                    </div>
+                    <div class="content" id="team-info-content">
+                        <!-- top scorer -->
+                        <!-- clean sheets -->
+                        <!-- home record -->
+                        <!-- away record -->
+                    </div>
+                </div>
+            </div>
+            <div class="nine wide column">
+                <!-- standings table -->
+                <div class="ui fluid card">
+                    <div class="content card-header">
+                        <div class="header card-label">
+                            Standings
+                        </div>
+                    </div>
+                    <div class="content" id="table-standings">
+                        <table class="ui celled compact unstackable striped table">
+                            <thead>
+                            <tr>
+                                <th class="center aligned">Pos</th>
+                                <th class="center aligned">Club</th>
+                                <th class="mobile-table center aligned">P</th>
+                                <th class="center aligned">W</th>
+                                <th class="center aligned">D</th>
+                                <th class="center aligned">L</th>
+                                <th class="center aligned">GF</th>
+                                <th class="center aligned">GA</th>
+                                <th class="mobile-table center aligned">GD</th>
+                                <th class="center aligned">Pts</th>
+                            </tr>
+                            </thead>
+                            <tbody id="table-standings-content">
+                            <!-- table content -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            <div class="three wide column">
+                <!-- news  -->
+                <div class="ui fluid card">
+                    <div class="content card-header">
+                        <div class="header card-label">
+                            Team News
+                        </div>
+                    </div>
+                    <div class="content" id="team-news-content">
+                        <!-- teams news content -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- SCRIPTS -->
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.5.0/Chart.min.js"></script>
+<script src="https://www.gstatic.com/firebasejs/live/3.0/firebase.js"></script>
+<script src="https://cdn.jsdelivr.net/momentjs/2.12.0/moment.min.js"></script>
+<script src="https://code.jquery.com/jquery-2.1.3.min.js"></script>
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/izimodal/1.4.2/js/iziModal.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.2.10/semantic.min.js"></script>
+<script type="text/javascript" src="logic.js"></script>
+</body>
+
+</html>

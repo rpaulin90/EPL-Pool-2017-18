@@ -1,0 +1,337 @@
+body {
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+}
+
+/* HEADER NAVBAR */
+#top-navbar div.ui.container div.selectable {
+  cursor: pointer;
+}
+
+#logo img {
+  height: 30px;
+  width: auto;
+}
+
+/* TEAM NAME */
+#team-name {
+  color: black;
+  margin-top: 70px;
+}
+
+/* PICKS SECTION */
+#profilePage {
+    margin-top: 30px;
+}
+
+div.wide.column {
+    padding: 0px 5px !important;
+}
+
+/* PICKS */
+#gameweeks-picks-content {
+    padding: 10px 0px;
+}
+
+#picksContainer {
+    margin: 25px 0px 10px 0px;
+}
+
+table.ui.very.compact {
+    font-size: 9pt;
+}
+
+.radio-inline {
+    font-size: 9pt !important;
+}
+
+.team-pick {
+  padding-left: 10px !important;
+}
+
+.draw-pick {
+  padding-left: 10px !important;
+}
+
+.ui.fixed.table td, .ui.fixed.table th {
+    padding: 1px 8px 1px 4px;
+}
+
+.ui.celled.table td, .ui.celled.table th {
+    padding: 1px 8px 1px 4px;
+}
+
+#submitPicks {
+    padding: 10px;
+}
+
+/* LAST WEEKS RESULTS */
+#last-weeks-results-content {
+    padding: 0px 0px;
+}
+
+.result-cell {
+  font-size: 9pt;
+  padding: 0px 10px;
+  line-height: 20px;
+}
+
+/* YOUR PICKS */
+#your-picks-content {
+    padding: 0px 0px;
+}
+
+#yourPicks td {
+  line-height: 40px;
+}
+
+.radio {
+  cursor: pointer;
+}
+
+.radio.selected {
+  background-color: #0E6EB8 !important;
+  color: white !important;
+}
+
+/* LOWER SECTION */
+#clubs {
+    margin-top: 40px;
+    margin-bottom: 20px;
+}
+
+/* TEAM NAV */
+#nav-container {
+    text-align: center;
+    overflow-x: auto;
+    overflow-y: hidden
+}
+
+#club-navbar {
+    border-top: 2px solid rgba(34,36,38,.15);
+    display: -webkit-inline-box;
+    font-size: 11pt;
+}
+
+#content-container {
+    margin-top: 35px;
+}
+
+#TOT img {
+    height: 3rem;
+    width: auto;
+}
+
+#nav-container div.item {
+    cursor: pointer;
+}
+
+#nav-container div.item:hover {
+    background-color: transparent;
+    box-shadow: none;
+    border-color: darkred;
+}
+
+/* TEAM CONTENT */
+
+.card-header {
+    background-color: green !important;
+}
+
+.meta {
+    color: #ebebeb !important;
+    font-size: .77em !important;
+}
+
+div.ui.fluid.card div.card-header div.card-label {
+    color: white;
+}
+
+h2.ui.sub.header {
+  font-size: 9pt;
+  margin-top: 0px;
+  margin-bottom: 0px;
+  padding-top: 15px;
+  padding-bottom: 0px;
+}
+
+#injuries-content {
+    font-size: 9pt;
+    padding-top: 0px;
+}
+
+#team-info-content {
+    font-size: 9pt;
+    padding-top: 0px;
+}
+
+#table-standings {
+    font-size: 9pt;
+    padding: 10px 10px;
+    overflow: auto;
+}
+
+#team-news-content {
+    font-size: 9pt;
+    padding-top: 0px;
+}
+
+/* MODALS */
+#lastWeek-modal {
+  text-align: center;
+}
+
+#lastWeeksResultsContainer {
+  margin: 20px 0px;
+}
+
+#currentPicks-modal {
+  text-align: center;
+}
+
+#rankings-modal {
+  text-align: center;
+}
+
+#currentPicks-modal div.content {
+  padding: 0px;
+}
+
+#currentPicks-modal div.sixteen.wide.column {
+  padding: 0px 0px !important;
+}
+
+#rankings-modal div.content {
+  padding: 0px;
+}
+
+#rankings-modal div.sixteen.wide.column {
+  padding: 0px 0px !important;
+}
+
+/*OTHER*/
+.hidden {
+    display: none !important;
+}
+
+.radio:hover {
+    background-color: #2185D0;
+    color: #fff;
+}
+
+/* CSS for Login Page */
+.masthead h1.ui.header {
+    margin-top: 1em;
+    margin-bottom: 0em;
+    font-size: 4em;
+    font-weight: normal;
+}
+
+.masthead.segment {
+    min-height: 300px;
+    padding: 2em 0em 5em 0em;
+    border-bottom: solid 2px white;
+}
+
+.ui.vertical.stripe {
+    padding: 6em 0em;
+}
+
+.ui.vertical.stripe .row {
+    background-color: rgba(0, 0, 0, 0.7);
+    border: solid 2px white;
+    color: white;
+    padding: 20px;
+}
+
+.ui.vertical.stripe .row h3 {
+    color: white;
+}
+
+.ui.vertical.stripe .button + h3, .ui.vertical.stripe p + h3 {
+    margin-top: 3em;
+}
+
+.ui.vertical.stripe h3 {
+    font-size: 2em;
+}
+
+#authors {
+  float: left;
+  clear: both;
+  font-family: 'Oswald', sans-serif;
+  font-size: 10px;
+}
+
+@media screen and (max-width:600px){
+    #table-standings {
+        padding: 0px;
+    }
+
+    .mobile-table {
+        display: none;
+    }
+
+    #team-name {
+        margin-top: 280px;
+    }
+
+    #profilePage {
+      margin-top: 0px;
+    }
+
+    #logo {
+        display: none;
+    }
+}
+
+@media screen and (min-width:600px) and (max-width:768px){
+    .desktop-table {
+        display: none;
+    }
+
+    #team-name {
+      margin-top: 280px;
+    }
+
+    #profilePage {
+      margin-top: 0px;
+    }
+
+    #logo {
+      display: none;
+    }
+}
+
+@media screen and (min-width:768px) and (max-width:990px){
+    #table-standings {
+        padding: 0px;
+    }
+
+    .mobile-table {
+        display: none;
+    }
+}
+
+@media screen and (min-width:990px){
+    .desktop-table {
+        display: none;
+    }
+}
+
+/* CHAT SECTION */
+
+#chat {
+    overflow-y: scroll;
+    height: 200px;
+    background-color: #1e1e1e;
+    color: #fff;
+    text-align: left;
+    margin-top: 10px;
+    margin-bottom: 20px;
+    opacity: .6;
+    padding-left: 5px;
+    font-family: 'Inconsolata', monospace;
+
+}
