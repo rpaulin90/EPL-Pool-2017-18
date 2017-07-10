@@ -57,7 +57,7 @@ $(document).ready(function() {
     if(gameWeek > 38){
         gameWeek = 39;
     }
-    gameWeek = 1;
+    gameWeek = 2;
     var seasonOver = false;
 
     if(gameWeek > 38){
