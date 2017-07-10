@@ -250,41 +250,42 @@ $(document).ready(function() {
             //     [gameWeek - 1]: resultsLastWeek
             //
             // });
-        });
 
-        // EVERYONE'S PICKS
-        if(gameWeek === 1){
+            // EVERYONE'S PICKS
+            if(gameWeek === 1){
 
-            $("#everyone-modal").css("display","none");
-            $("#no_games_reminder").css("display","block");
+                $("#everyone-modal").css("display","none");
+                $("#no_games_reminder").css("display","block");
 
-        }else {
-            usersRef.orderByKey().once("value", function (snapshot) {
-                snapshot.forEach(function (childSnapshot) {
-                    var keyId = childSnapshot.val();
-                    var user_row = $("<tr>");
-                    var user_name = $("<td style='text-align: center'>");
-                    user_name.css("font-weight", "bold");
-                    user_name.append(keyId.name);
-                    user_row.append(user_name);
+            }else {
+                usersRef.orderByKey().once("value", function (snapshot) {
+                    snapshot.forEach(function (childSnapshot) {
+                        var keyId = childSnapshot.val();
+                        var user_row = $("<tr>");
+                        var user_name = $("<td style='text-align: center'>");
+                        user_name.css("font-weight", "bold");
+                        user_name.append(keyId.name);
+                        user_row.append(user_name);
 
-                    for (var l = 0; l < keyId.picksPerGameWeek[gameWeek - 2].length; l++) {
+                        for (var l = 0; l < keyId.picksPerGameWeek[gameWeek - 2].length; l++) {
 
-                        var pick = $("<td style='text-align: center'>");
+                            var pick = $("<td style='text-align: center'>");
 
-                        pick.html(keyId.picksPerGameWeek[gameWeek - 2][l]);
+                            pick.html(keyId.picksPerGameWeek[gameWeek - 2][l]);
+                            if(keyId.picksPerGameWeek[gameWeek - 2][l] === resultsLastWeek[l]){
+                                pick.css("background-color","blue");
+                                console.log("hello luni");
+                            }
 
-                        user_row.append(pick);
-                        if(keyId.picksPerGameWeek[gameWeek - 2][l] === resultsLastWeek[l]){
-                            pick.css("background-color","#27c751");
+                            user_row.append(pick);
+                            $("#everyone-table").append(user_row);
+
                         }
-                        $("#everyone-table").append(user_row);
 
-                    }
-
-                })
-            });
-        }
+                    })
+                });
+            }
+        });
 
     };
 
