@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Picks</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/izimodal/1.4.2/css/iziModal.min.css">
+    <link rel="stylesheet" href="plugin_CSS.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.2.10/semantic.min.css">
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body style="width: 1200px; overflow: scroll">
+
+<!-- EVERYONE'S LAST WEEK'S PICKS -->
+
+<div id="everyone-modal" style="margin-left: auto; margin-right: auto; width: 1100px">
+    <div class="container">
+        <div class="sixteen wide column">
+            <div class="ui fluid card">
+                <div class="content">
+                    <table id="everyone-table" class="ui very compact small fixed unstackable striped table"
+                           style="font-size: 8px">
+                        <tr id="everyone-titles" style="background-color: #21b3b4">
+                            <th style='text-align: center'>User</th>
+                            <!-- append the titles of all games -->
+                        </tr>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="container" id="no_games_reminder" style="display: none">
+    <h3>There were no games last week</h3>
+</div>
+
+
+<!-- SCRIPTS -->
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.5.0/Chart.min.js"></script>
+<script src="https://www.gstatic.com/firebasejs/live/3.0/firebase.js"></script>
+<script src="https://cdn.jsdelivr.net/momentjs/2.12.0/moment.min.js"></script>
+<script src="https://code.jquery.com/jquery-2.1.3.min.js"></script>
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/izimodal/1.4.2/js/iziModal.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.2.10/semantic.min.js"></script>
+<script type="text/javascript" src="logic.js"></script>
+</body>
+</html>

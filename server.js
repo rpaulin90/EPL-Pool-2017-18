@@ -54,6 +54,14 @@ app.get("/",function(req,res){
 
 });
 
+app.get("/all_current_picks",function(req,res){
+
+    res.sendFile(path.join(__dirname,"/public/everyone_picks.html"));
+
+});
+
+
+
 // var j = schedule.scheduleJob({hour: 11, minute: 49, dayOfWeek: 0}, function(){
 //     transporter.sendMail(mailOptions, function(error, info) {
 //         if (error) {

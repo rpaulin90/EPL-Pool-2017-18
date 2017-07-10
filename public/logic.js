@@ -57,7 +57,7 @@ $(document).ready(function() {
     if(gameWeek > 38){
         gameWeek = 39;
     }
-    //gameWeek = 3;
+    gameWeek = 1;
     var seasonOver = false;
 
     if(gameWeek > 38){
@@ -84,8 +84,8 @@ $(document).ready(function() {
 
         $.ajax({
             headers: {'X-Auth-Token': '43d2319104c54b0c9cf2d5679ab2ae5d'},
-            url: 'https://api.football-data.org/v1/competitions/445/fixtures',
-            //url: 'https://api.football-data.org/v1/competitions/426/fixtures',
+            //url: 'https://api.football-data.org/v1/competitions/445/fixtures',
+            url: 'https://api.football-data.org/v1/competitions/426/fixtures',
             dataType: 'json',
             type: 'GET'
         }).done(function (response) {
@@ -106,8 +106,8 @@ $(document).ready(function() {
 
             var index = 0;
             for (var i = 0; i < response.fixtures.length; i++) {
-                if (response.fixtures[i].matchday === gameWeek && (response.fixtures[i].status === "TIMED" || response.fixtures[i].status === "SCHEDULED")) {
-                //if (response.fixtures[i].matchday === gameWeek && response.fixtures[i].status === "FINISHED") {
+                //if (response.fixtures[i].matchday === gameWeek && (response.fixtures[i].status === "TIMED" || response.fixtures[i].status === "SCHEDULED")) {
+                if (response.fixtures[i].matchday === gameWeek && response.fixtures[i].status === "FINISHED") {
 
                     matchHolder.push(i);
                     matchToRadio = game.thisWeekPick[gameWeek - 1][index];
@@ -156,13 +156,14 @@ $(document).ready(function() {
 
                     var row = $("<tr>");
                     var col = $("<td>");
-                    var game_titles = $("<th>");
+                    var game_titles = $("<th style='text-align: center'>");
 
                     var resultHomeDiv = $('<div class="result-cell">');
                     var homeTeam = $('<span>' + response.fixtures[e].homeTeamName + '</span><span class="right floated"> ' + response.fixtures[e].result.goalsHomeTeam + '</span>');
                     var resultAwayDiv = $('<div class="result-cell">');
                     var awayTeam = $('<span>' + response.fixtures[e].awayTeamName + '</span><span class="right floated"> ' + response.fixtures[e].result.goalsAwayTeam + '</span>');
 
+                    game_titles.append("<p>" + response.fixtures[e].homeTeamName+ "</p>" + "<p> vs </p>" + "<p>" + response.fixtures[e].awayTeamName+ "</p>");
                     resultHomeDiv.append(homeTeam);
                     resultAwayDiv.append(awayTeam);
                     col.append(resultHomeDiv);
@@ -197,32 +198,38 @@ $(document).ready(function() {
             });
 
             // EVERYONE'S PICKS
+            if(gameWeek === 1){
 
-            usersRef.orderByKey().once("value", function (snapshot) {
-                snapshot.forEach(function (childSnapshot) {
-                    var keyId = childSnapshot.val();
-                    var user_row = $("<tr>");
-                    var user_name = $("<td>");
-                    user_name.css("font-weight","bold");
-                    user_name.append(keyId.name);
-                    user_row.append(user_name);
+                $("#everyone-modal").css("display","none");
+                $("#no_games_reminder").css("display","block");
 
-                    if (keyId.picksPerGameWeek[gameWeek - 2][0] === "undefined") {
-                        $("#yourPicks").html("No picks were selected last week");
-                    } else {
-                        for (var l = 0; l < keyId.picksPerGameWeek[gameWeek - 2].length; l++) {
+            }else {
+                usersRef.orderByKey().once("value", function (snapshot) {
+                    snapshot.forEach(function (childSnapshot) {
+                        var keyId = childSnapshot.val();
+                        var user_row = $("<tr>");
+                        var user_name = $("<td style='text-align: center'>");
+                        user_name.css("font-weight", "bold");
+                        user_name.append(keyId.name);
+                        user_row.append(user_name);
 
-                            var pick = $("<td>");
+                        if (keyId.picksPerGameWeek[gameWeek - 2][0] === "undefined") {
+                            $("#yourPicks").html("No picks were selected last week");
+                        } else {
+                            for (var l = 0; l < keyId.picksPerGameWeek[gameWeek - 2].length; l++) {
 
-                            pick.html(keyId.picksPerGameWeek[gameWeek - 2][l]);
+                                var pick = $("<td style='text-align: center'>");
 
-                            user_row.append(pick);
-                            $("#everyone-table").append(user_row);
+                                pick.html(keyId.picksPerGameWeek[gameWeek - 2][l]);
 
+                                user_row.append(pick);
+                                $("#everyone-table").append(user_row);
+
+                            }
                         }
-                    }
-                })
-            });
+                    })
+                });
+            }
 
             /// GETTING TIME REMAINING BEFORE PICK SUBMISSION DEADLINE
             startTime = moment(new Date(GWArray[x]));
@@ -669,7 +676,7 @@ $(document).ready(function() {
                 var picksPerGameWeek = [];
 
                 for (var z = 0; z < 10; z++) {
-                    picksPerGameWeek.push("undefined");
+                    picksPerGameWeek.push("DRAW");
                 }
 
                 for (var p = 0; p < 38; p++) {
@@ -806,7 +813,8 @@ $(document).ready(function() {
 
     $("#everyoneBtn").on('click', function () {
 
-        $('#everyone-modal').iziModal('open', this); // Do not forget the "this"
+        window.open('/all_current_picks', '_blank');
+
     });
 
     $("#rankingsBtn").on('click', function () {
@@ -840,21 +848,21 @@ $(document).ready(function() {
         autoOpen: false
     });
 
-    $("#everyone-modal").iziModal({
-        title: "Last week's everyone's picks",
-        subtitle: "Gameweek: " + (gameWeek-1),
-        theme: '',
-        headerColor: '#2a339c',
-        overlayColor: 'rgba(0, 0, 0, 0.4)',
-        iconColor: '',
-        iconClass: null,
-        width: 600,
-        padding: 0,
-        overlayClose: true,
-        closeOnEscape: true,
-        bodyOverflow: false,
-        autoOpen: false
-    });
+    // $("#everyone-modal").iziModal({
+    //     title: "Last week's everyone's picks",
+    //     subtitle: "Gameweek: " + (gameWeek-1),
+    //     theme: '',
+    //     headerColor: '#2a339c',
+    //     overlayColor: 'rgba(0, 0, 0, 0.4)',
+    //     iconColor: '',
+    //     iconClass: null,
+    //     width: 600,
+    //     padding: 0,
+    //     overlayClose: true,
+    //     closeOnEscape: true,
+    //     bodyOverflow: false,
+    //     autoOpen: false
+    // });
 
 
     $("#rankings-modal").iziModal({
