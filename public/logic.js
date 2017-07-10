@@ -19,7 +19,7 @@ $(document).ready(function() {
 /// THIS WILL HELP US GET THE KEYS AND VALUES OF EACH USER
     var usersRef = database.ref().child("users");
 
-    var resultsRef = database.ref().child("results");
+    //var resultsRef = database.ref().child("results");
 
 // OUR GAME OBJECT, WHERE WE STORE INFORMATION FROM THE USER
 // THIS INFORMATION WILL LATER BE PUSHED INTO FIREBASE
@@ -68,7 +68,7 @@ $(document).ready(function() {
     var deadLine = false;
     var selectedTeams = [];
 
-    var incompleteSelection = false;
+    //var incompleteSelection = false;
     var resultsLastWeek = [];
 
 
@@ -77,9 +77,9 @@ $(document).ready(function() {
 // WE ALSO OBTAIN ALL NECESSARY INFORMATION FROM THE API TO USE IN OTHER SECTIONS (MODALS)
     var makePicksTable = function () {
         $("#picksContainer").empty();
-        $("#game-results").empty();
-        $("#yourPicks").empty();
-        $("#yourPicksCurrent").empty();
+        //$("#game-results").empty();
+        //$("#yourPicks").empty();
+        //$("#yourPicksCurrent").empty();
 
 
         $.ajax({
@@ -154,48 +154,48 @@ $(document).ready(function() {
             for (var e = 0; e < response.fixtures.length; e++) {
                 if ((response.fixtures[e].matchday === gameWeek-1) && (response.fixtures[e].status === "FINISHED" || response.fixtures[e].status === "IN_PLAY")) {
 
-                    var row = $("<tr>");
-                    var col = $("<td>");
+                    // var row = $("<tr>");
+                    // var col = $("<td>");
                     var game_titles = $("<th style='text-align: center'>");
 
-                    var resultHomeDiv = $('<div class="result-cell">');
-                    var homeTeam = $('<span>' + response.fixtures[e].homeTeamName + '</span><span class="right floated"> ' + response.fixtures[e].result.goalsHomeTeam + '</span>');
-                    var resultAwayDiv = $('<div class="result-cell">');
-                    var awayTeam = $('<span>' + response.fixtures[e].awayTeamName + '</span><span class="right floated"> ' + response.fixtures[e].result.goalsAwayTeam + '</span>');
+                    // var resultHomeDiv = $('<div class="result-cell">');
+                    // var homeTeam = $('<span>' + response.fixtures[e].homeTeamName + '</span><span class="right floated"> ' + response.fixtures[e].result.goalsHomeTeam + '</span>');
+                    // var resultAwayDiv = $('<div class="result-cell">');
+                    // var awayTeam = $('<span>' + response.fixtures[e].awayTeamName + '</span><span class="right floated"> ' + response.fixtures[e].result.goalsAwayTeam + '</span>');
 
-                    game_titles.append("<p>" + response.fixtures[e].homeTeamName+ "</p>" + "<p> vs </p>" + "<p>" + response.fixtures[e].awayTeamName+ "</p>");
-                    resultHomeDiv.append(homeTeam);
-                    resultAwayDiv.append(awayTeam);
-                    col.append(resultHomeDiv);
-                    col.append(resultAwayDiv);
-                    row.append(col);
-                    $('#game-results').append(row);
+                    game_titles.append("<p>" + response.fixtures[e].homeTeamName + ": " + response.fixtures[e].result.goalsHomeTeam + "</p>" + "<p> vs </p>" + "<p>" + response.fixtures[e].awayTeamName + ": " + response.fixtures[e].result.goalsAwayTeam + "</p>");
+                    // resultHomeDiv.append(homeTeam);
+                    // resultAwayDiv.append(awayTeam);
+                    // col.append(resultHomeDiv);
+                    // col.append(resultAwayDiv);
+                    // row.append(col);
+                    // $('#game-results').append(row);
                     $("#everyone-titles").append(game_titles);
                 }
             }
 
-            usersRef.orderByKey().equalTo(game.currentUserUid).once("value", function (snapshot) {
-                snapshot.forEach(function (childSnapshot) {
-                    var keyId = childSnapshot.val();
-
-                    if(keyId.picksPerGameWeek[gameWeek-2][0] === "undefined"){
-                        $("#yourPicks").html("No picks were selected last week");
-                    }else {
-                        for (var l = 0; l < keyId.picksPerGameWeek[gameWeek - 2].length; l++) {
-
-                            var row = $("<tr>");
-                            var picks = $("<td>");
-
-                            picks.html(keyId.picksPerGameWeek[gameWeek - 2][l]);
-
-                            row.append(picks);
-                            $("#yourPicks").append(row);
-
-                        }
-                    }
-
-                });
-            });
+            // usersRef.orderByKey().equalTo(game.currentUserUid).once("value", function (snapshot) {
+            //     snapshot.forEach(function (childSnapshot) {
+            //         var keyId = childSnapshot.val();
+            //
+            //         if(keyId.picksPerGameWeek[gameWeek-2][0] === "undefined"){
+            //             $("#yourPicks").html("No picks were selected last week");
+            //         }else {
+            //             for (var l = 0; l < keyId.picksPerGameWeek[gameWeek - 2].length; l++) {
+            //
+            //                 var row = $("<tr>");
+            //                 var picks = $("<td>");
+            //
+            //                 picks.html(keyId.picksPerGameWeek[gameWeek - 2][l]);
+            //
+            //                 row.append(picks);
+            //                 $("#yourPicks").append(row);
+            //
+            //             }
+            //         }
+            //
+            //     });
+            // });
 
             // EVERYONE'S PICKS
             if(gameWeek === 1){
@@ -213,20 +213,17 @@ $(document).ready(function() {
                         user_name.append(keyId.name);
                         user_row.append(user_name);
 
-                        if (keyId.picksPerGameWeek[gameWeek - 2][0] === "undefined") {
-                            $("#yourPicks").html("No picks were selected last week");
-                        } else {
-                            for (var l = 0; l < keyId.picksPerGameWeek[gameWeek - 2].length; l++) {
+                        for (var l = 0; l < keyId.picksPerGameWeek[gameWeek - 2].length; l++) {
 
-                                var pick = $("<td style='text-align: center'>");
+                            var pick = $("<td style='text-align: center'>");
 
-                                pick.html(keyId.picksPerGameWeek[gameWeek - 2][l]);
+                            pick.html(keyId.picksPerGameWeek[gameWeek - 2][l]);
 
-                                user_row.append(pick);
-                                $("#everyone-table").append(user_row);
+                            user_row.append(pick);
+                            $("#everyone-table").append(user_row);
 
-                            }
                         }
+
                     })
                 });
             }
@@ -369,7 +366,7 @@ $(document).ready(function() {
                     gameWeeks.push(g + 1);
                 }
 
-                var ctx = document.getElementById("canvas").getContext("2d");;
+                var ctx = document.getElementById("canvas").getContext("2d");
                 var myChart = new Chart(ctx, {
                     type: 'line',
                     data: {
@@ -475,15 +472,6 @@ $(document).ready(function() {
         }
     });
 
-    /// WE NEED TO RETRIEVE SOME INFORMATION FROM THE API BEFORE WE UPDATE THE DATABASE
-    // jQuery(function($)
-    // {
-    //     $(document).ajaxStop(function()
-    //     {
-    //         $("#gameweeks-picks-header").html('Gameweek ' + gameWeek + ' picks');
-    //         updateDatabase();// Executed when all ajax requests are done.
-    //     });
-    // });
 
 // WHAT HAPPENS WHEN A USER LOGS OUT
     $(document).on("click", "#signout-btn", function (event) {
@@ -519,70 +507,34 @@ $(document).ready(function() {
                 var keyId = childSnapshot.val();
 
                 $("#yourPicks").empty();
-                if(keyId.picksPerGameWeek[gameWeek-2][0] === "undefined"){
-                    $("#yourPicks").html("No picks were selected last week");
-                }else {
-                    for (var l = 0; l < keyId.picksPerGameWeek[gameWeek - 2].length; l++) {
 
-                        var row = $("<tr>");
-                        var picks = $("<td>");
+                for (var l = 0; l < keyId.picksPerGameWeek[gameWeek - 2].length; l++) {
 
-                        picks.html(keyId.picksPerGameWeek[gameWeek - 2][l]);
+                    var row = $("<tr>");
+                    var picks = $("<td>");
 
-                        row.append(picks);
-                        $("#yourPicks").append(row);
+                    picks.html(keyId.picksPerGameWeek[gameWeek - 2][l]);
 
-                    }
-                }
-                $("#yourPicksCurrent").empty();
-                if(keyId.picksPerGameWeek[gameWeek - 1][0] === "undefined"){
-                    $("#yourPicksCurrent").html("No picks have been selected yet");
-                }else {
-                    for (var c = 0; c < keyId.picksPerGameWeek[gameWeek - 1].length; c++) {
-                        ////// making the current week's picks section
-                        var rowCurrent = $("<tr>");
-                        var picksCurrent = $("<td>");
+                    row.append(picks);
+                    $("#yourPicks").append(row);
 
-                        picksCurrent.html(keyId.picksPerGameWeek[gameWeek - 1][c]);
-
-                        rowCurrent.append(picksCurrent);
-                        $("#yourPicksCurrent").append(rowCurrent);
-                    }
                 }
             });
         });
 
+        var databaseGameWeek = (gameWeek-1).toString();
 
-        incompleteSelection = false;
-        for (var r = 0; r < (selectedTeams.length); r++) {
-            var value = ($("#picksContainer .radio-group .selected[name='" + r + "']").attr("value"));
-            selectedTeams[r] = value;
-            //  selectedTeams[r] = ($("input[name='" + r + "']:checked").val());
-            if (selectedTeams[r] === undefined) {
+        var submitInfo = {
 
-                $("#picks-submitted-unsuccessfully").iziModal({
-                    title: "Please make a selection for every game",
-                    icon: 'icon-star',
-                    headerColor: '#b83c3c ',
-                    width: 600,
-                    timeout: 15000,
-                    timeoutProgressbar: true,
-                    transitionIn: 'fadeInUp',
-                    transitionOut: 'fadeOutDown',
-                    history: false,
-                    autoOpen: true/*,
-                     onClosed: function(){
-                     $("html").removeClass('overflow-hidden');
-                     }*/
-                });
+            databaseGameWeek: databaseGameWeek,
+            selectedTeams:selectedTeams,
+            currentUserUid:game.currentUserUid
 
-                //alert("undefined bruh");
-                incompleteSelection = true;
-                break;
-            }
-        }
+        };
 
-        if (incompleteSelection === false) {
+        $.post("/submitPicks", submitInfo, function (data) {
+            console.log(data);
+
             $("#picks-submitted-successfully").iziModal({
                 title: "Your Picks Have Been Successfully Submitted",
                 icon: 'icon-star',
@@ -599,21 +551,6 @@ $(document).ready(function() {
                  $("html").removeClass('overflow-hidden');
                  }*/
             });
-        }
-
-
-        var databaseGameWeek = (gameWeek-1).toString();
-
-        var submitInfo = {
-
-            databaseGameWeek: databaseGameWeek,
-            selectedTeams:selectedTeams,
-            currentUserUid:game.currentUserUid
-
-        };
-
-        $.post("/submitPicks", submitInfo, function (data) {
-            console.log(data);
 
         });
 
@@ -832,21 +769,21 @@ $(document).ready(function() {
     });
 
 
-    $("#lastWeek-modal").iziModal({
-        title: "Last week's results and picks",
-        subtitle: "Gameweek: " + (gameWeek-1),
-        theme: '',
-        headerColor: '#2a339c',
-        overlayColor: 'rgba(0, 0, 0, 0.4)',
-        iconColor: '',
-        iconClass: null,
-        width: 600,
-        padding: 0,
-        overlayClose: true,
-        closeOnEscape: true,
-        bodyOverflow: false,
-        autoOpen: false
-    });
+    // $("#lastWeek-modal").iziModal({
+    //     title: "Last week's results and picks",
+    //     subtitle: "Gameweek: " + (gameWeek-1),
+    //     theme: '',
+    //     headerColor: '#2a339c',
+    //     overlayColor: 'rgba(0, 0, 0, 0.4)',
+    //     iconColor: '',
+    //     iconClass: null,
+    //     width: 600,
+    //     padding: 0,
+    //     overlayClose: true,
+    //     closeOnEscape: true,
+    //     bodyOverflow: false,
+    //     autoOpen: false
+    // });
 
     // $("#everyone-modal").iziModal({
     //     title: "Last week's everyone's picks",
