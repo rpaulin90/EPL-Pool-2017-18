@@ -197,37 +197,6 @@ $(document).ready(function() {
             //     });
             // });
 
-            // EVERYONE'S PICKS
-            if(gameWeek === 1){
-
-                $("#everyone-modal").css("display","none");
-                $("#no_games_reminder").css("display","block");
-
-            }else {
-                usersRef.orderByKey().once("value", function (snapshot) {
-                    snapshot.forEach(function (childSnapshot) {
-                        var keyId = childSnapshot.val();
-                        var user_row = $("<tr>");
-                        var user_name = $("<td style='text-align: center'>");
-                        user_name.css("font-weight", "bold");
-                        user_name.append(keyId.name);
-                        user_row.append(user_name);
-
-                        for (var l = 0; l < keyId.picksPerGameWeek[gameWeek - 2].length; l++) {
-
-                            var pick = $("<td style='text-align: center'>");
-
-                            pick.html(keyId.picksPerGameWeek[gameWeek - 2][l]);
-
-                            user_row.append(pick);
-                            $("#everyone-table").append(user_row);
-
-                        }
-
-                    })
-                });
-            }
-
             /// GETTING TIME REMAINING BEFORE PICK SUBMISSION DEADLINE
             startTime = moment(new Date(GWArray[x]));
             timeDiff = moment(startTime).diff(moment(), "hours");
@@ -282,6 +251,40 @@ $(document).ready(function() {
             //
             // });
         });
+
+        // EVERYONE'S PICKS
+        if(gameWeek === 1){
+
+            $("#everyone-modal").css("display","none");
+            $("#no_games_reminder").css("display","block");
+
+        }else {
+            usersRef.orderByKey().once("value", function (snapshot) {
+                snapshot.forEach(function (childSnapshot) {
+                    var keyId = childSnapshot.val();
+                    var user_row = $("<tr>");
+                    var user_name = $("<td style='text-align: center'>");
+                    user_name.css("font-weight", "bold");
+                    user_name.append(keyId.name);
+                    user_row.append(user_name);
+
+                    for (var l = 0; l < keyId.picksPerGameWeek[gameWeek - 2].length; l++) {
+
+                        var pick = $("<td style='text-align: center'>");
+
+                        pick.html(keyId.picksPerGameWeek[gameWeek - 2][l]);
+
+                        user_row.append(pick);
+                        if(keyId.picksPerGameWeek[gameWeek - 2][l] === lastWeeksPicks[l]){
+                            user_row.css("background-color","#27c751");
+                        }
+                        $("#everyone-table").append(user_row);
+
+                    }
+
+                })
+            });
+        }
 
     };
 
