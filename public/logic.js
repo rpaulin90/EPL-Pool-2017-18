@@ -275,7 +275,7 @@ $(document).ready(function() {
                         pick.html(keyId.picksPerGameWeek[gameWeek - 2][l]);
 
                         user_row.append(pick);
-                        if(keyId.picksPerGameWeek[gameWeek - 2][l] === lastWeeksPicks[l]){
+                        if(keyId.picksPerGameWeek[gameWeek - 2][l] === resultsLastWeek[l]){
                             user_row.css("background-color","#27c751");
                         }
                         $("#everyone-table").append(user_row);
