@@ -163,34 +163,51 @@ module.exports = function(app) {
                             for(var t = 0; t < weeklyPointsArray.length; t++){
                                 totalPoints += parseInt(weeklyPointsArray[t]);
                             }
+
                             console.log("update 4");
                             usersRefAdmin.child(childSnapshot.key).update({
                                 totalPointsNegative: -totalPoints,
                                 totalPoints: totalPoints
                             });
+
+                            usersRefAdmin.child(childSnapshot.key).child("monthlyPoints").update({
+                                0: parseInt(weeklyPointsArray[0]) + parseInt(weeklyPointsArray[1]) + parseInt(weeklyPointsArray[2]),
+                                1: parseInt(weeklyPointsArray[3]) + parseInt(weeklyPointsArray[4]) + parseInt(weeklyPointsArray[5]) + parseInt(weeklyPointsArray[6]),
+                                2: parseInt(weeklyPointsArray[7]) + parseInt(weeklyPointsArray[8]) + parseInt(weeklyPointsArray[9]),
+                                3: parseInt(weeklyPointsArray[10]) + parseInt(weeklyPointsArray[11]) + parseInt(weeklyPointsArray[12]) + parseInt(weeklyPointsArray[13]),
+                                4: parseInt(weeklyPointsArray[14]) + parseInt(weeklyPointsArray[15]) + parseInt(weeklyPointsArray[16]) + parseInt(weeklyPointsArray[17]) + parseInt(weeklyPointsArray[18]) + parseInt(weeklyPointsArray[19]) + parseInt(weeklyPointsArray[20]),
+                                5: parseInt(weeklyPointsArray[21]) + parseInt(weeklyPointsArray[22]) + parseInt(weeklyPointsArray[23]) + parseInt(weeklyPointsArray[24]),
+                                6: parseInt(weeklyPointsArray[25]) + parseInt(weeklyPointsArray[26]) + parseInt(weeklyPointsArray[27]),
+                                7: parseInt(weeklyPointsArray[28]) + parseInt(weeklyPointsArray[29]) + parseInt(weeklyPointsArray[30]) + parseInt(weeklyPointsArray[31]),
+                                8: parseInt(weeklyPointsArray[32]) + parseInt(weeklyPointsArray[33]) + parseInt(weeklyPointsArray[34]) + parseInt(weeklyPointsArray[35]),
+                                9: parseInt(weeklyPointsArray[36]) + parseInt(weeklyPointsArray[37])
+
+                            });
+
+
                         });
-                    });
 
-                    // 4- CHECK If USER HAS 0 POINTS
-                    usersRefAdmin.orderByKey().once("value", function (snapshot) {
-                        snapshot.forEach(function (childSnapshot) {
+                        // 4- CHECK If USER HAS 0 POINTS
+                        usersRefAdmin.orderByKey().once("value", function (snapshot) {
+                            snapshot.forEach(function (childSnapshot) {
 
-                            var pointsId = childSnapshot.val().pointsPerGameWeek;
-                            var totalPoints = 0;
-                            var weeklyPointsArray = pointsId;
+                                var pointsId = childSnapshot.val().pointsPerGameWeek;
+                                var totalPoints = 0;
+                                var weeklyPointsArray = pointsId;
 
-                            for(var t = 0; t < weeklyPointsArray.length; t++){
-                                totalPoints += weeklyPointsArray[t];
-                            }
+                                for(var t = 0; t < weeklyPointsArray.length; t++){
+                                    totalPoints += weeklyPointsArray[t];
+                                }
 
-                            if(totalPoints === 0){
-                                usersRefAdmin.child(childSnapshot.key).update({
-                                    totalPointsNegative: 1000
-                                });
-                            }
-                            console.log("update 5");
+                                if(totalPoints === 0){
+                                    usersRefAdmin.child(childSnapshot.key).update({
+                                        totalPointsNegative: 1000
+                                    });
+                                }
+                                console.log("update 5");
+                            });
+                            res.json(req.body.databaseLastGameWeek)
                         });
-                        res.json(req.body.databaseLastGameWeek)
                     });
                 });
             });
@@ -215,6 +232,7 @@ module.exports = function(app) {
             picksPerGameWeek: req.body.picksArray, //// picksArray = [[undefined,undefined,...,undefined],[undefined,undefined,...,undefined], etc]
             pointsPerGameWeek: req.body.pointsArray, //// pointsArray = [0,0,0,0,...,0] 38 gameweeks, so 38 weekly points
             gamesPlayedPerWeek: req.body.gamesPlayedArray, //// TO COUNT HOW MANY GAMES A USER HAS PLAYED
+            monthlyPoints: req.body.monthlyPoints,
             totalPoints: 0,
             totalGamesPlayed: 0
 

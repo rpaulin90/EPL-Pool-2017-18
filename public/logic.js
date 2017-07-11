@@ -37,7 +37,7 @@ $(document).ready(function() {
 
 ///////// OBTAINING CURRENT GAMEWEEK ///////////
 
-    var GWArray = ["08/12/2017", "08/12/2017", "08/19/2017", "08/19/2017", "08/26/2017", "08/26/2017", "09/09/2017", "09/09/2017", "09/16/2017", "09/16/2017", "09/23/2017", "09/23/2017", "09/30/2017", "09/30/2017", "10/14/2017", "10/14/2017", "10/21/2017", "10/21/2017", "10/28/2017", "10/28/2017", "11/04/2017", "11/04/2017", "11/18/2017", "11/18/2017", "11/25/2017", "11/25/2017", "11/28/2017", "11/29/2017", "12/02/2017", "12/02/2017", "12/09/2017", "12/09/2017", "12/12/2017", "12/13/2017", "12/16/2017", "12/16/2017", "12/23/2017", "12/23/2017", "12/26/2017", "12/26/2017", "12/30/2017", "12/30/2017", "01/01/2018", "01/01/2018", "01/13/2018", "01/13/2018", "01/20/2018", "01/20/2018", "01/30/2018", "01/31/2018", "02/03/2018", "02/03/2018", "02/10/2018", "02/10/2018", "02/24/2018", "02/24/2018", "03/03/2018", "03/03/2018", "03/10/2018", "03/10/2018", "03/17/2018", "03/17/2018", "03/31/2018", "03/31/2018", "04/07/2018", "04/07/2018", "04/14/2018", "04/14/2018", "04/21/2018", "04/21/2018", "04/28/2018", "04/28/2018", "05/05/2018", "05/13/2018"];
+    var GWArray = ["08/11/2017", "08/13/2017", "08/19/2017", "08/21/2017", "08/26/2017", "08/27/2017", "09/09/2017", "09/11/2017", "09/15/2017", "09/17/2017", "09/23/2017", "09/25/2017", "09/30/2017", "10/01/2017", "10/14/2017", "10/14/2017", "10/21/2017", "10/21/2017", "10/28/2017", "10/28/2017", "11/04/2017", "11/05/2017", "11/18/2017", "11/18/2017", "11/25/2017", "11/26/2017", "11/28/2017", "11/29/2017", "12/02/2017", "12/02/2017", "12/09/2017", "12/10/2017", "12/12/2017", "12/13/2017", "12/16/2017", "12/16/2017", "12/23/2017", "12/23/2017", "12/26/2017", "12/26/2017", "12/30/2017", "12/30/2017", "01/01/2018", "01/01/2018", "01/13/2018", "01/13/2018", "01/20/2018", "01/20/2018", "01/30/2018", "01/31/2018", "02/03/2018", "02/03/2018", "02/10/2018", "02/10/2018", "02/24/2018", "02/24/2018", "03/03/2018", "03/03/2018", "03/10/2018", "03/10/2018", "03/17/2018", "03/17/2018", "03/31/2018", "03/31/2018", "04/07/2018", "04/07/2018", "04/14/2018", "04/14/2018", "04/21/2018", "04/21/2018", "04/28/2018", "04/28/2018", "05/05/2018","05/05/2018", "05/13/2018", "05/13/2018"];
 
     //var GWArray = ["06/12/2017"];
 
@@ -57,7 +57,7 @@ $(document).ready(function() {
     if(gameWeek > 38){
         gameWeek = 39;
     }
-    gameWeek = 2;
+    gameWeek = 5;
     var seasonOver = false;
 
     if(gameWeek > 38){
@@ -95,7 +95,7 @@ $(document).ready(function() {
             //var gameNumberRow = $("<th>").text("GAME").addClass("center aligned").css("font-weight","bold");
             var headHome = $("<th>").text("HOME").addClass("center aligned").css("font-weight","bold");
             var headDraw = $("<th>").text("").addClass("center aligned");
-            var headAway = $("<th>").text("AWAY").addClass("center aligned").css("font-weight","bold");;
+            var headAway = $("<th>").text("AWAY").addClass("center aligned").css("font-weight","bold");
             //headRow.append(gameNumberRow);
             headRow.append(headHome);
             headRow.append(headDraw);
@@ -217,33 +217,36 @@ $(document).ready(function() {
             }
 
             // OBTAINING RESULTS FROM LAST WEEK (E.G. DETERMINE WHO WON OR IF IT WAS A DRAW)
-            for (var f = 0; f < response.fixtures.length; f++) {
-                if ((response.fixtures[f].matchday === gameWeek - 1) && (response.fixtures[f].status === "FINISHED" || response.fixtures[f].status === "IN_PLAY")) {
 
-                    // IF HOME TEAM WON
-                    if (response.fixtures[f].result.goalsHomeTeam > response.fixtures[f].result.goalsAwayTeam) {
-                        resultsLastWeek.push(response.fixtures[f].homeTeamName);
-                    }
+            if(gameWeek !== 1) {
 
-                    // IF AWAY TEAM WON
-                    else if (response.fixtures[f].result.goalsHomeTeam < response.fixtures[f].result.goalsAwayTeam) {
-                        resultsLastWeek.push(response.fixtures[f].awayTeamName);
-                    }
+                for (var f = 0; f < response.fixtures.length; f++) {
+                    if ((response.fixtures[f].matchday === gameWeek - 1) && (response.fixtures[f].status === "FINISHED" || response.fixtures[f].status === "IN_PLAY")) {
 
-                    // IF IT WAS A DRAW
-                    else if (response.fixtures[f].result.goalsHomeTeam === response.fixtures[f].result.goalsAwayTeam) {
-                        resultsLastWeek.push("DRAW");
+                        // IF HOME TEAM WON
+                        if (response.fixtures[f].result.goalsHomeTeam > response.fixtures[f].result.goalsAwayTeam) {
+                            resultsLastWeek.push(response.fixtures[f].homeTeamName);
+                        }
+
+                        // IF AWAY TEAM WON
+                        else if (response.fixtures[f].result.goalsHomeTeam < response.fixtures[f].result.goalsAwayTeam) {
+                            resultsLastWeek.push(response.fixtures[f].awayTeamName);
+                        }
+
+                        // IF IT WAS A DRAW
+                        else if (response.fixtures[f].result.goalsHomeTeam === response.fixtures[f].result.goalsAwayTeam) {
+                            resultsLastWeek.push("DRAW");
+                        }
                     }
                 }
+
+                //// SETTING THE RESULTS AS AN ARRAY IN FIREBASE
+
+                $.post("/resultsLastWeek", {resultsLastWeek: resultsLastWeek, gameWeek: gameWeek}, function (data) {
+                    console.log(data);
+                    updateDatabase();
+                });
             }
-
-            //// SETTING THE RESULTS AS AN ARRAY IN FIREBASE
-
-            $.post("/resultsLastWeek", {resultsLastWeek: resultsLastWeek, gameWeek: gameWeek}, function (data) {
-                console.log(data);
-                $("#gameweeks-picks-header").html('Gameweek ' + gameWeek + ' picks');
-                updateDatabase();
-            });
 
             // resultsRef.set({
             //
@@ -258,23 +261,23 @@ $(document).ready(function() {
                 $("#no_games_reminder").css("display","block");
 
             }else {
+                $("#everyone_pick_h3").text("Gameweek " + (gameWeek-1) + " picks");
                 usersRef.orderByKey().once("value", function (snapshot) {
                     snapshot.forEach(function (childSnapshot) {
                         var keyId = childSnapshot.val();
                         var user_row = $("<tr>");
-                        var user_name = $("<td style='text-align: center'>");
+                        var user_name = $("<td style='text-align: center; background-color: lightgray'>");
                         user_name.css("font-weight", "bold");
                         user_name.append(keyId.name);
                         user_row.append(user_name);
 
                         for (var l = 0; l < keyId.picksPerGameWeek[gameWeek - 2].length; l++) {
 
-                            var pick = $("<td style='text-align: center'>");
+                            var pick = $("<td style='text-align: center; font-weight: bold'>");
 
                             pick.html(keyId.picksPerGameWeek[gameWeek - 2][l]);
                             if(keyId.picksPerGameWeek[gameWeek - 2][l] === resultsLastWeek[l]){
-                                pick.css("background-color","blue");
-                                console.log("hello luni");
+                                pick.css("background-color","dodgerblue");
                             }
 
                             user_row.append(pick);
@@ -284,7 +287,10 @@ $(document).ready(function() {
 
                     })
                 });
+
             }
+
+            $("#gameweeks-picks-header").html('Your gameweek ' + gameWeek + ' picks');
         });
 
     };
@@ -296,7 +302,7 @@ $(document).ready(function() {
             var databaseLastGameWeek = (gameWeek - 2).toString();
 
             $.post("/updateDatabase", {databaseLastGameWeek: databaseLastGameWeek,resultsLastWeek: resultsLastWeek}, function (data) {
-                console.log(data);
+                //console.log(data);
 
             });
 
@@ -326,6 +332,7 @@ $(document).ready(function() {
                 var guessesSubmitted = $("<td>");
                 var totalCorrect = $("<td>");
                 var correctThisWeek = $("<td>");
+                var correctThisMonth = $("<td>");
 
                 place.append(counter);
                 week.append(gameWeek-1);
@@ -333,6 +340,37 @@ $(document).ready(function() {
                 teamOwner.append(userID.name);
                 guessesSubmitted.append(userID.totalGamesPlayed);
                 correctThisWeek.append(userID.pointsPerGameWeek[gameWeek-2]);
+                if(gameWeek <= 4) {
+                    correctThisMonth.append(userID.monthlyPoints[0]);
+                }
+                else if(gameWeek <= 8) {
+                    correctThisMonth.append(userID.monthlyPoints[1]);
+                }
+                else if(gameWeek <= 11) {
+                    correctThisMonth.append(userID.monthlyPoints[2]);
+                }
+                else if(gameWeek <= 15) {
+                    correctThisMonth.append(userID.monthlyPoints[3]);
+                }
+                else if(gameWeek <= 22) {
+                    correctThisMonth.append(userID.monthlyPoints[4]);
+                }
+                else if(gameWeek <= 26) {
+                    correctThisMonth.append(userID.monthlyPoints[5]);
+                }
+                else if(gameWeek <= 29) {
+                    correctThisMonth.append(userID.monthlyPoints[6]);
+                }
+                else if(gameWeek <= 33) {
+                    correctThisMonth.append(userID.monthlyPoints[7]);
+                }
+                else if(gameWeek <= 37) {
+                    correctThisMonth.append(userID.monthlyPoints[8]);
+                }
+                else {
+                    correctThisMonth.append(userID.monthlyPoints[9]);
+                }
+
                 totalCorrect.append(userID.totalPoints);
 
                 row.append(place);
@@ -342,6 +380,7 @@ $(document).ready(function() {
                 row.append(teamOwner);
                 row.append(guessesSubmitted);
                 row.append(correctThisWeek);
+                row.append(correctThisMonth);
                 row.append(totalCorrect);
                 $("#rankings").append(row);
 
@@ -370,46 +409,91 @@ $(document).ready(function() {
                     gameWeeks.push(g + 1);
                 }
 
-                var ctx = document.getElementById("canvas").getContext("2d");
-                var myChart = new Chart(ctx, {
-                    type: 'line',
-                    data: {
-                        labels: gameWeeks,
-                        datasets: [
-                            {
-                                label: "Week Points",
-                                fill: false,
-                                lineTension: 0.1,
-                                backgroundColor: "rgba(75,192,192,0.4)",
-                                borderColor: "rgba(75,192,192,1)",
-                                borderCapStyle: 'butt',
-                                borderDash: [],
-                                borderDashOffset: 0.0,
-                                borderJoinStyle: 'miter',
-                                pointBorderColor: "rgba(75,192,192,1)",
-                                pointBackgroundColor: "#fff",
-                                pointBorderWidth: 1,
-                                pointHoverRadius: 5,
-                                pointHoverBackgroundColor: "rgba(75,192,192,1)",
-                                pointHoverBorderColor: "rgba(220,220,220,1)",
-                                pointHoverBorderWidth: 2,
-                                pointRadius: 1,
-                                pointHitRadius: 10,
-                                data: weeklyPointsArray,
-                                spanGaps: false
-                            }
-                        ]
-                    },
-                    options: {
-                        scales: {
-                            yAxes: [{
-                                ticks: {
-                                    beginAtZero:true
+                usersRef.orderByKey().once("value", function (snapshot_2) {
+
+                    var arrayOfArrays = [];
+
+                    snapshot_2.forEach(function (childSnapshot_2) {
+                        var currentArray = []
+                        var pointsId_2 = childSnapshot_2.val().pointsPerGameWeek;
+                        for(var z = 0; z < gameWeek-1; z++){
+                            currentArray.push(pointsId_2[z])
+                        }
+                        arrayOfArrays.push(currentArray);
+                    });
+
+                    var sums = arrayOfArrays.reduce(function(r, e, i) {
+                        e.forEach((a, j) => r[j] = (r[j] || 0) + a)
+                        if (i == arrayOfArrays.length - 1) r = r.map(el => el / arrayOfArrays.length);
+                        return r;
+                    }, [])
+
+                    console.log(sums);
+
+                    var ctx = document.getElementById("canvas").getContext("2d");
+                    var myChart = new Chart(ctx, {
+                        type: 'line',
+                        data: {
+                            labels: gameWeeks,
+                            datasets: [
+                                {
+                                    label: "Week Points (Own)",
+                                    fill: false,
+                                    lineTension: 0.1,
+                                    backgroundColor: "rgba(75,192,192,0.4)",
+                                    borderColor: "rgba(75,192,192,1)",
+                                    borderCapStyle: 'butt',
+                                    borderDash: [],
+                                    borderDashOffset: 0.0,
+                                    borderJoinStyle: 'miter',
+                                    pointBorderColor: "rgba(75,192,192,1)",
+                                    pointBackgroundColor: "#fff",
+                                    pointBorderWidth: 1,
+                                    pointHoverRadius: 5,
+                                    pointHoverBackgroundColor: "rgba(75,192,192,1)",
+                                    pointHoverBorderColor: "rgba(220,220,220,1)",
+                                    pointHoverBorderWidth: 2,
+                                    pointRadius: 1,
+                                    pointHitRadius: 10,
+                                    data: weeklyPointsArray,
+                                    spanGaps: false
+                                },
+                                {
+                                    label: "Week Points (League Average)",
+                                    fill: false,
+                                    lineTension: 0.1,
+                                    backgroundColor: "#ff6450",
+                                    borderColor: "#ff6450",
+                                    borderCapStyle: 'butt',
+                                    borderDash: [],
+                                    borderDashOffset: 0.0,
+                                    borderJoinStyle: 'miter',
+                                    pointBorderColor: "#ff6450",
+                                    pointBackgroundColor: "#fff",
+                                    pointBorderWidth: 1,
+                                    pointHoverRadius: 5,
+                                    pointHoverBackgroundColor: "#ff6450",
+                                    pointHoverBorderColor: "rgba(220,220,220,1)",
+                                    pointHoverBorderWidth: 2,
+                                    pointRadius: 1,
+                                    pointHitRadius: 10,
+                                    data: sums,
+                                    spanGaps: false
                                 }
-                            }]
+                            ]
                         },
-                        responsive: true
-                    }
+                        options: {
+                            scales: {
+                                yAxes: [{
+                                    ticks: {
+                                        beginAtZero:true
+                                    }
+                                }]
+                            },
+                            responsive: true
+                        }
+                    });
+
                 });
 
             });
@@ -433,13 +517,12 @@ $(document).ready(function() {
 
             var currentUser = firebase.auth().currentUser;
             game.currentUserUid = currentUser.uid;
-
+            console.log("onAuthStateChanged");
             usersRef.orderByKey().equalTo(game.currentUserUid).once("value", function (snapshot) {
 
                 snapshot.forEach(function (childSnapshot) {
 
                     var keyId = childSnapshot.val();
-
                     game.thisWeekPick = keyId.picksPerGameWeek;
                     game.email = keyId.email;
                     game.name = keyId.name;
@@ -447,6 +530,7 @@ $(document).ready(function() {
 
                     $("#welcome").text("Hello " + keyId.name + "!!");
                     $("#team-name h1").html(keyId.teamName.toUpperCase());
+
                 });
 
                 $("#homepage").css("display", "none");
@@ -455,7 +539,14 @@ $(document).ready(function() {
                 $("#rankingsTable").css("display","block");
                 $("#lastWeekInfo").css("display","block");
                 selectedTeams = [];
-                makePicksTable();
+                console.log(game.thisWeekPick[gameWeek - 1]);
+                if(game.thisWeekPick[gameWeek - 1] === undefined){
+                    location.reload();
+                }else{
+                    makePicksTable();
+                }
+
+
             });
         } else {
             $("#top-navbar").addClass("hidden");
@@ -511,34 +602,70 @@ $(document).ready(function() {
                 var keyId = childSnapshot.val();
 
                 $("#yourPicks").empty();
+                if(keyId.picksPerGameWeek[gameWeek-2][0] === "undefined"){
+                    $("#yourPicks").html("No picks were selected last week");
+                }else {
+                    for (var l = 0; l < keyId.picksPerGameWeek[gameWeek - 2].length; l++) {
 
-                for (var l = 0; l < keyId.picksPerGameWeek[gameWeek - 2].length; l++) {
+                        var row = $("<tr>");
+                        var picks = $("<td>");
 
-                    var row = $("<tr>");
-                    var picks = $("<td>");
+                        picks.html(keyId.picksPerGameWeek[gameWeek - 2][l]);
 
-                    picks.html(keyId.picksPerGameWeek[gameWeek - 2][l]);
+                        row.append(picks);
+                        $("#yourPicks").append(row);
 
-                    row.append(picks);
-                    $("#yourPicks").append(row);
+                    }
+                }
+                $("#yourPicksCurrent").empty();
+                if(keyId.picksPerGameWeek[gameWeek - 1][0] === "undefined"){
+                    $("#yourPicksCurrent").html("No picks have been selected yet");
+                }else {
+                    for (var c = 0; c < keyId.picksPerGameWeek[gameWeek - 1].length; c++) {
+                        ////// making the current week's picks section
+                        var rowCurrent = $("<tr>");
+                        var picksCurrent = $("<td>");
 
+                        picksCurrent.html(keyId.picksPerGameWeek[gameWeek - 1][c]);
+
+                        rowCurrent.append(picksCurrent);
+                        $("#yourPicksCurrent").append(rowCurrent);
+                    }
                 }
             });
         });
 
-        var databaseGameWeek = (gameWeek-1).toString();
 
-        var submitInfo = {
+        incompleteSelection = false;
+        for (var r = 0; r < (selectedTeams.length); r++) {
+            var value = ($("#picksContainer .radio-group .selected[name='" + r + "']").attr("value"));
+            selectedTeams[r] = value;
+            //  selectedTeams[r] = ($("input[name='" + r + "']:checked").val());
+            if (selectedTeams[r] === undefined) {
 
-            databaseGameWeek: databaseGameWeek,
-            selectedTeams:selectedTeams,
-            currentUserUid:game.currentUserUid
+                $("#picks-submitted-unsuccessfully").iziModal({
+                    title: "Please make a selection for every game",
+                    icon: 'icon-star',
+                    headerColor: '#b83c3c ',
+                    width: 600,
+                    timeout: 15000,
+                    timeoutProgressbar: true,
+                    transitionIn: 'fadeInUp',
+                    transitionOut: 'fadeOutDown',
+                    history: false,
+                    autoOpen: true/*,
+                     onClosed: function(){
+                     $("html").removeClass('overflow-hidden');
+                     }*/
+                });
 
-        };
+                //alert("undefined bruh");
+                incompleteSelection = true;
+                break;
+            }
+        }
 
-        $.post("/submitPicks", submitInfo, function (data) {
-            console.log(data);
-
+        if (incompleteSelection === false) {
             $("#picks-submitted-successfully").iziModal({
                 title: "Your Picks Have Been Successfully Submitted",
                 icon: 'icon-star',
@@ -555,10 +682,26 @@ $(document).ready(function() {
                  $("html").removeClass('overflow-hidden');
                  }*/
             });
+        }
+
+
+        var databaseGameWeek = (gameWeek-1).toString();
+
+        var submitInfo = {
+
+            databaseGameWeek: databaseGameWeek,
+            selectedTeams:selectedTeams,
+            currentUserUid:game.currentUserUid
+
+        };
+
+        $.post("/submitPicks", submitInfo, function (data) {
+            console.log(data);
 
         });
 
     });
+
 
     ////////////////// IZIMODAL ///////////////////////
 
@@ -630,6 +773,10 @@ $(document).ready(function() {
                 for (var a = 0; a < 38; a++) {
                     pointsArray.push(0);
                 }
+                var monthlyPointsArray = [];
+                for (var b = 0; b < 10; b++) {
+                    monthlyPointsArray.push(0);
+                }
                 var gamesPlayedArray = pointsArray;
 
                 var createUserObject = {
@@ -641,13 +788,15 @@ $(document).ready(function() {
                     picksArray: picksArray, //// picksArray = [[undefined,undefined,...,undefined],[undefined,undefined,...,undefined], etc]
                     pointsArray: pointsArray, //// pointsArray = [0,0,0,0,...,0] 38 gameweeks, so 38 weekly points
                     gamesPlayedArray: gamesPlayedArray, //// TO COUNT HOW MANY GAMES A USER HAS PLAYED
+                    monthlyPoints: monthlyPointsArray, //// 0 = August, 1 = , September, etc...
                     totalPoints: 0,
                     totalGamesPlayed: 0
 
                 };
 
                 $.post("/createUser", createUserObject, function (data) {
-                    console.log(data);
+                    console.log("createUser post successful");
+                    return console.log(data);
 
                 });
             }).catch(function (error) {
@@ -761,6 +910,7 @@ $(document).ready(function() {
     $("#rankingsBtn").on('click', function () {
         $("#rankings").empty();
         makeRankingsTable();
+        $('table').tablesort();
         $('#rankings-modal').iziModal('open', this); // Do not forget the "this"
     });
 
@@ -1047,6 +1197,7 @@ $(document).ready(function() {
             td.appendTo(tr);
             $("#table-standings-content").append(tr);
         });
+        $('table').tablesort();
 
         // NEWS
         $("#team-news-content").empty();
@@ -1171,7 +1322,7 @@ $(document).ready(function() {
             } else if (team.short_name === "EVE") {
                 team.tag = ["Everton", "Toffees"];
             } else if (team.short_name === "HTAFC") {
-                team.tag = ["Huddersfield Town", "Terriers"];
+                team.tag = ["Huddersfield", "Huddersfield Town", "Terriers"];
             } else if (team.short_name === "LEI") {
                 team.tag = ["Leicester", "Foxes"];
             } else if (team.short_name === "LIV") {

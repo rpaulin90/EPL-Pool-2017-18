@@ -225,15 +225,16 @@
         <div class="sixteen wide column">
             <div class="ui fluid card">
                 <div class="content">
-                    <table class="ui very compact small fixed unstackable striped table">
+                    <table class="ui very compact small fixed unstackable striped sortable celled table">
                         <thead>
                         <tr>
                             <th class="one wide center aligned">Position</th>
                             <th class="one wide center aligned">Week</th>
                             <th class="four wide center aligned">Team Name</th>
                             <th class="four wide center aligned">Team Owner</th>
-                            <th class="three wide center aligned">Guesses Submitted</th>
-                            <th class="two wide center aligned">Points This Week</th>
+                            <th class="three wide center aligned">Picks Submitted</th>
+                            <th class="two wide center aligned">Weekly Points</th>
+                            <th class="two wide center aligned" id="monthly_points">Monthly Points</th>
                             <th class="two wide center aligned">Total Points</th>
                         </tr>
                         </thead>
@@ -247,6 +248,8 @@
 </div>
 
 <div id="clubs" class="hidden">
+    <h2 style="text-align: center">Analysis Section</h2>
+    <h5 style="text-align: center">Look at the current league table and search for news on each team by clicking on their badge</h5>
     <div id="nav-container">
         <nav class="ui secondary pointing menu" id="club-navbar">
             <!-- club navigation bar -->
@@ -290,7 +293,7 @@
                         </div>
                     </div>
                     <div class="content" id="table-standings">
-                        <table class="ui celled compact unstackable striped table">
+                        <table class="ui celled compact unstackable striped sortable table">
                             <thead>
                             <tr>
                                 <th class="center aligned">Pos</th>
@@ -337,6 +340,7 @@
 <script src="https://code.jquery.com/jquery-2.1.3.min.js"></script>
 <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/izimodal/1.4.2/js/iziModal.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.2.10/semantic.min.js"></script>
+<script type="text/javascript" src="sort_table.js"></script>
 <script type="text/javascript" src="logic.js"></script>
 </body>
 
