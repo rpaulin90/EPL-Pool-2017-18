@@ -57,7 +57,7 @@ $(document).ready(function() {
     if(gameWeek > 38){
         gameWeek = 39;
     }
-    gameWeek = 5;
+    //gameWeek = 5;
     var seasonOver = false;
 
     if(gameWeek > 38){
@@ -84,8 +84,8 @@ $(document).ready(function() {
 
         $.ajax({
             headers: {'X-Auth-Token': '43d2319104c54b0c9cf2d5679ab2ae5d'},
-            //url: 'https://api.football-data.org/v1/competitions/445/fixtures',
-            url: 'https://api.football-data.org/v1/competitions/426/fixtures',
+            url: 'https://api.football-data.org/v1/competitions/445/fixtures',
+            //url: 'https://api.football-data.org/v1/competitions/426/fixtures',
             dataType: 'json',
             type: 'GET'
         }).done(function (response) {
@@ -106,8 +106,8 @@ $(document).ready(function() {
 
             var index = 0;
             for (var i = 0; i < response.fixtures.length; i++) {
-                //if (response.fixtures[i].matchday === gameWeek && (response.fixtures[i].status === "TIMED" || response.fixtures[i].status === "SCHEDULED")) {
-                if (response.fixtures[i].matchday === gameWeek && response.fixtures[i].status === "FINISHED") {
+                if (response.fixtures[i].matchday === gameWeek && (response.fixtures[i].status === "TIMED" || response.fixtures[i].status === "SCHEDULED")) {
+                //if (response.fixtures[i].matchday === gameWeek && response.fixtures[i].status === "FINISHED") {
 
                     matchHolder.push(i);
                     matchToRadio = game.thisWeekPick[gameWeek - 1][index];
@@ -153,49 +153,11 @@ $(document).ready(function() {
             // making the last week's results and picks info section (EXAMPLE: SWANSEA 1 - 0 SUNDERLAND /// PICK: SWANSEA)
             for (var e = 0; e < response.fixtures.length; e++) {
                 if ((response.fixtures[e].matchday === gameWeek-1) && (response.fixtures[e].status === "FINISHED" || response.fixtures[e].status === "IN_PLAY")) {
-
-                    // var row = $("<tr>");
-                    // var col = $("<td>");
                     var game_titles = $("<th style='text-align: center'>");
-
-                    // var resultHomeDiv = $('<div class="result-cell">');
-                    // var homeTeam = $('<span>' + response.fixtures[e].homeTeamName + '</span><span class="right floated"> ' + response.fixtures[e].result.goalsHomeTeam + '</span>');
-                    // var resultAwayDiv = $('<div class="result-cell">');
-                    // var awayTeam = $('<span>' + response.fixtures[e].awayTeamName + '</span><span class="right floated"> ' + response.fixtures[e].result.goalsAwayTeam + '</span>');
-
                     game_titles.append("<p>" + response.fixtures[e].homeTeamName + ": " + response.fixtures[e].result.goalsHomeTeam + "</p>" + "<p> vs </p>" + "<p>" + response.fixtures[e].awayTeamName + ": " + response.fixtures[e].result.goalsAwayTeam + "</p>");
-                    // resultHomeDiv.append(homeTeam);
-                    // resultAwayDiv.append(awayTeam);
-                    // col.append(resultHomeDiv);
-                    // col.append(resultAwayDiv);
-                    // row.append(col);
-                    // $('#game-results').append(row);
                     $("#everyone-titles").append(game_titles);
                 }
             }
-
-            // usersRef.orderByKey().equalTo(game.currentUserUid).once("value", function (snapshot) {
-            //     snapshot.forEach(function (childSnapshot) {
-            //         var keyId = childSnapshot.val();
-            //
-            //         if(keyId.picksPerGameWeek[gameWeek-2][0] === "undefined"){
-            //             $("#yourPicks").html("No picks were selected last week");
-            //         }else {
-            //             for (var l = 0; l < keyId.picksPerGameWeek[gameWeek - 2].length; l++) {
-            //
-            //                 var row = $("<tr>");
-            //                 var picks = $("<td>");
-            //
-            //                 picks.html(keyId.picksPerGameWeek[gameWeek - 2][l]);
-            //
-            //                 row.append(picks);
-            //                 $("#yourPicks").append(row);
-            //
-            //             }
-            //         }
-            //
-            //     });
-            // });
 
             /// GETTING TIME REMAINING BEFORE PICK SUBMISSION DEADLINE
             startTime = moment(new Date(GWArray[x]));
@@ -248,11 +210,6 @@ $(document).ready(function() {
                 });
             }
 
-            // resultsRef.set({
-            //
-            //     [gameWeek - 1]: resultsLastWeek
-            //
-            // });
 
             // EVERYONE'S PICKS
             if(gameWeek === 1){
@@ -507,9 +464,9 @@ $(document).ready(function() {
     firebase.auth().onAuthStateChanged(function (user) {
         if (user) { /// THERE IS A USER LOGGED IN
             $("#loader").removeClass("hidden");
+            callInfoAPI();
             $("#top-navbar").removeClass("hidden");
             $("#team-name").removeClass("hidden");
-            callInfoAPI();
             $("#wrapper").addClass("hide");
             $("body").css('background-image', 'none');
             $('#registrationBtn').css('display','none');
@@ -581,7 +538,6 @@ $(document).ready(function() {
             lastWeeksPicks = "";
             game.lastWeeksResults = "";
             weeklyPoints = 0;
-            //updateDatabase();
             $(".rankingsDiv").css("display", "none");
             $("#lastWeekInfo").css("display","none");
             $('#registrationBtn').css('display','block');
@@ -596,45 +552,6 @@ $(document).ready(function() {
     /// ALSO TAKE CARE OF UPDATING THE CURRENT AND LAST WEEK PICKS MODALS ACCORDINGLY
     $("#submitPicks").on("click", function (event) {
         event.preventDefault();
-
-        usersRef.orderByKey().equalTo(game.currentUserUid).once("value", function (snapshot) {
-            snapshot.forEach(function (childSnapshot) {
-                var keyId = childSnapshot.val();
-
-                $("#yourPicks").empty();
-                if(keyId.picksPerGameWeek[gameWeek-2][0] === "undefined"){
-                    $("#yourPicks").html("No picks were selected last week");
-                }else {
-                    for (var l = 0; l < keyId.picksPerGameWeek[gameWeek - 2].length; l++) {
-
-                        var row = $("<tr>");
-                        var picks = $("<td>");
-
-                        picks.html(keyId.picksPerGameWeek[gameWeek - 2][l]);
-
-                        row.append(picks);
-                        $("#yourPicks").append(row);
-
-                    }
-                }
-                $("#yourPicksCurrent").empty();
-                if(keyId.picksPerGameWeek[gameWeek - 1][0] === "undefined"){
-                    $("#yourPicksCurrent").html("No picks have been selected yet");
-                }else {
-                    for (var c = 0; c < keyId.picksPerGameWeek[gameWeek - 1].length; c++) {
-                        ////// making the current week's picks section
-                        var rowCurrent = $("<tr>");
-                        var picksCurrent = $("<td>");
-
-                        picksCurrent.html(keyId.picksPerGameWeek[gameWeek - 1][c]);
-
-                        rowCurrent.append(picksCurrent);
-                        $("#yourPicksCurrent").append(rowCurrent);
-                    }
-                }
-            });
-        });
-
 
         incompleteSelection = false;
         for (var r = 0; r < (selectedTeams.length); r++) {
@@ -771,11 +688,11 @@ $(document).ready(function() {
 
                 var pointsArray = [];
                 for (var a = 0; a < 38; a++) {
-                    pointsArray.push(0);
+                    pointsArray.push(parseInt(0));
                 }
                 var monthlyPointsArray = [];
                 for (var b = 0; b < 10; b++) {
-                    monthlyPointsArray.push(0);
+                    monthlyPointsArray.push(parseInt(0))
                 }
                 var gamesPlayedArray = pointsArray;
 
@@ -907,6 +824,12 @@ $(document).ready(function() {
 
     });
 
+    $("#instructions").on('click', function () {
+
+        window.open('/instructions_and_contact', '_blank');
+
+    });
+
     $("#rankingsBtn").on('click', function () {
         $("#rankings").empty();
         makeRankingsTable();
@@ -921,40 +844,6 @@ $(document).ready(function() {
         autoOpen: false,
         overlayColor: 'rgba(0, 0, 0, 0.6)'
     });
-
-
-    // $("#lastWeek-modal").iziModal({
-    //     title: "Last week's results and picks",
-    //     subtitle: "Gameweek: " + (gameWeek-1),
-    //     theme: '',
-    //     headerColor: '#2a339c',
-    //     overlayColor: 'rgba(0, 0, 0, 0.4)',
-    //     iconColor: '',
-    //     iconClass: null,
-    //     width: 600,
-    //     padding: 0,
-    //     overlayClose: true,
-    //     closeOnEscape: true,
-    //     bodyOverflow: false,
-    //     autoOpen: false
-    // });
-
-    // $("#everyone-modal").iziModal({
-    //     title: "Last week's everyone's picks",
-    //     subtitle: "Gameweek: " + (gameWeek-1),
-    //     theme: '',
-    //     headerColor: '#2a339c',
-    //     overlayColor: 'rgba(0, 0, 0, 0.4)',
-    //     iconColor: '',
-    //     iconClass: null,
-    //     width: 600,
-    //     padding: 0,
-    //     overlayClose: true,
-    //     closeOnEscape: true,
-    //     bodyOverflow: false,
-    //     autoOpen: false
-    // });
-
 
     $("#rankings-modal").iziModal({
         title: 'Rankings',
@@ -1073,7 +962,10 @@ $(document).ready(function() {
         }
 
         $.each(teams, function(index, team) {
+
             var teamBadge = $('<div class="item" id=' + team.short_name + '><img class="badge-icon" src="' + team.crestUrl + '"></div>');
+
+
 
             $("#club-navbar").append(teamBadge);
             if (team.short_name === "ARS") {
@@ -1099,7 +991,7 @@ $(document).ready(function() {
      */
     function createTeamsPage(teamId) {
         var teamCode = getTeamCode(teamId);
-        // get team function
+        //get team function
         var contentContainer = $("#content-container");
 
         // INJURIES BOX

@@ -60,6 +60,12 @@ app.get("/all_current_picks",function(req,res){
 
 });
 
+app.get("/instructions_and_contact",function(req,res){
+
+    res.sendFile(path.join(__dirname,"/public/Instructions.html"));
+
+});
+
 
 
 // var j = schedule.scheduleJob({hour: 11, minute: 49, dayOfWeek: 0}, function(){
