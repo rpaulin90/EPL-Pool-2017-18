@@ -51,6 +51,12 @@
         <div class="item selectable" id="pointsGraph">Weekly Points</div>
         <div class="item selectable" id="rankingsBtn">Standings</div>
         <div class="item selectable" id="everyoneBtn">Everyone's Picks</div>
+        <div class="ui search selection dropdown item selectable" style="min-width: inherit">
+            <div class="text">Weekly Picks</div>
+            <i class="dropdown icon"></i>
+            <div id="weekly_picks" class="menu" style="background-color: #767676; color: white">
+            </div>
+        </div>
         <div class="item selectable" id="instructions">Instructions and Contact</div>
         <div class="right menu">
             <div class="ui item selectable" id="signout-btn">Sign out</div>
@@ -174,45 +180,45 @@
 </div>
 
 
-<!-- LAST WEEK'S RESULTS AND LAST WEEK'S PICKS -->
+<!-- WEEKPLY PICKS -->
 
-<!--<div id="lastWeek-modal">-->
-    <!--<div class="container" id="lastWeeksResultsContainer">-->
-        <!--<div class="ui two column stackable grid container">-->
-            <!--<div class="ten wide column">-->
-                <!--<div class="ui fluid card">-->
-                    <!--<div class="content card-header">-->
-                        <!--<div class="header card-label">-->
-                            <!--Last week's results-->
-                        <!--</div>-->
-                    <!--</div>-->
-                    <!--<div class="content" id="last-weeks-results-content">-->
-                        <!--<table class="ui very compact small fixed unstackable striped table">-->
-                            <!--<tbody id="game-results">-->
+<div id="weekly-picks-modal">
+    <div class="container" id="lastWeeksResultsContainer">
+        <div class="ui two column stackable grid container">
+            <div class="ten wide column">
+                <div class="ui fluid card">
+                    <div class="content card-header">
+                        <div class="header card-label">
+                            Week's results
+                        </div>
+                    </div>
+                    <div class="content" id="last-weeks-results-content">
+                        <table class="ui very compact small fixed unstackable striped table">
+                            <tbody id="game-results">
 
-                            <!--</tbody>-->
-                        <!--</table>-->
-                    <!--</div>-->
-                <!--</div>-->
-            <!--</div>-->
-            <!--<div class="six wide column">-->
-                <!--<div class="ui fluid card">-->
-                    <!--<div class="content card-header">-->
-                        <!--<div class="header card-label">-->
-                            <!--Your Picks-->
-                        <!--</div>-->
-                    <!--</div>-->
-                    <!--<div class="content" id="your-picks-content">-->
-                        <!--<table class="ui very compact small fixed unstackable striped table">-->
-                            <!--<tbody id="yourPicks">-->
-                            <!--</tbody>-->
-                        <!--</table>-->
-                    <!--</div>-->
-                <!--</div>-->
-            <!--</div>-->
-        <!--</div>-->
-    <!--</div>-->
-<!--</div>-->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            <div class="six wide column">
+                <div class="ui fluid card">
+                    <div class="content card-header">
+                        <div class="header card-label">
+                            Your Picks
+                        </div>
+                    </div>
+                    <div class="content" id="your-picks-content">
+                        <table class="ui very compact small fixed unstackable striped table">
+                            <tbody id="yourPicks">
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 
 <!-- ALERTS FOR PICK SUBMISSION -->
 

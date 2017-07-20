@@ -21,6 +21,12 @@ $(document).ready(function() {
 
     //var resultsRef = database.ref().child("results");
 
+// INITIALIZE DROPDOWN
+
+    $('.ui.dropdown')
+        .dropdown()
+    ;
+
 // OUR GAME OBJECT, WHERE WE STORE INFORMATION FROM THE USER
 // THIS INFORMATION WILL LATER BE PUSHED INTO FIREBASE
     var game = {
@@ -30,7 +36,8 @@ $(document).ready(function() {
         userKeyNode: "",
         currentUserUid: "",
         thisWeekPick: [],
-        totalPoints: 0
+        totalPoints: 0,
+        fixtures:[]
 
     };
 
@@ -57,7 +64,7 @@ $(document).ready(function() {
     if(gameWeek > 38){
         gameWeek = 39;
     }
-    //gameWeek = 5;
+    gameWeek = 5;
     var seasonOver = false;
 
     if(gameWeek > 38){
@@ -84,12 +91,13 @@ $(document).ready(function() {
 
         $.ajax({
             headers: {'X-Auth-Token': '43d2319104c54b0c9cf2d5679ab2ae5d'},
-            url: 'https://api.football-data.org/v1/competitions/445/fixtures',
-            //url: 'https://api.football-data.org/v1/competitions/426/fixtures',
+            //url: 'https://api.football-data.org/v1/competitions/445/fixtures',
+            url: 'https://api.football-data.org/v1/competitions/426/fixtures',
             dataType: 'json',
             type: 'GET'
         }).done(function (response) {
             var matchHolder = [];
+            game.fixtures = response.fixtures;
 
             var headRow = $("<tr>");
             //var gameNumberRow = $("<th>").text("GAME").addClass("center aligned").css("font-weight","bold");
@@ -106,8 +114,9 @@ $(document).ready(function() {
 
             var index = 0;
             for (var i = 0; i < response.fixtures.length; i++) {
-                if (response.fixtures[i].matchday === gameWeek && (response.fixtures[i].status === "TIMED" || response.fixtures[i].status === "SCHEDULED")) {
+                //if (response.fixtures[i].matchday === gameWeek && (response.fixtures[i].status === "TIMED" || response.fixtures[i].status === "SCHEDULED")) {
                 //if (response.fixtures[i].matchday === gameWeek && response.fixtures[i].status === "FINISHED") {
+                if (response.fixtures[i].matchday === gameWeek) {
 
                     matchHolder.push(i);
                     matchToRadio = game.thisWeekPick[gameWeek - 1][index];
@@ -466,11 +475,18 @@ $(document).ready(function() {
             $("#loader").removeClass("hidden");
             callInfoAPI();
             $("#top-navbar").removeClass("hidden");
-            $("#team-name").removeClass("hidden");
             $("#wrapper").addClass("hide");
             $("body").css('background-image', 'none');
             $('#registrationBtn').css('display','none');
             $("#registrationBtn").addClass("hide");
+            $("#weekly_picks").empty();
+            for(var week = 0; week < 38; week++){
+                var week_div = $("<div>");
+                week_div.addClass("item weekly_pick");
+                week_div.attr("value",week);
+                week_div.text("Gameweek " + (week + 1));
+                $("#weekly_picks").append(week_div);
+            }
 
             var currentUser = firebase.auth().currentUser;
             game.currentUserUid = currentUser.uid;
@@ -495,6 +511,7 @@ $(document).ready(function() {
                 $("#profilePage").css("display", "block");
                 $("#rankingsTable").css("display","block");
                 $("#lastWeekInfo").css("display","block");
+                $("#team-name").removeClass("hidden");
                 selectedTeams = [];
                 console.log(game.thisWeekPick[gameWeek - 1]);
                 if(game.thisWeekPick[gameWeek - 1] === undefined){
@@ -802,6 +819,66 @@ $(document).ready(function() {
         });
     });
 
+    //// CLICKING ON A WEEKLY PICK OPTION
+
+    $(document).on("click", ".weekly_pick", function(event){
+
+        var value = parseInt($(this).attr("value"));
+
+        $('#game-results').empty();
+        $("#yourPicks").empty();
+
+
+
+        usersRef.orderByKey().equalTo(game.currentUserUid).once("value", function (snapshot) {
+
+
+            snapshot.forEach(function (childSnapshot) {
+
+                console.log(childSnapshot.val().picksPerGameWeek[value]);
+
+                for (var l = 0; l < childSnapshot.val().picksPerGameWeek[value].length; l++) {
+
+                    var row_pick = $("<tr>");
+                    var picks = $("<td>");
+
+                    picks.html(childSnapshot.val().picksPerGameWeek[value][l]);
+
+                    row_pick.append(picks);
+                    $("#yourPicks").append(row_pick);
+
+                }
+
+                for (var e = 0; e < game.fixtures.length; e++) {
+                    if ((game.fixtures[e].matchday === (value+1))) {
+
+                        var row = $("<tr>");
+                        var col = $("<td>");
+                        var game_titles = $("<th>");
+
+                        var resultHomeDiv = $('<div class="result-cell">');
+                        var homeTeam = $('<span>' + game.fixtures[e].homeTeamName + '</span><span class="right floated"> ' + game.fixtures[e].result.goalsHomeTeam + '</span>');
+                        var resultAwayDiv = $('<div class="result-cell">');
+                        var awayTeam = $('<span>' + game.fixtures[e].awayTeamName + '</span><span class="right floated"> ' + game.fixtures[e].result.goalsAwayTeam + '</span>');
+
+                        game_titles.append(game.fixtures[e].homeTeamName + " vs " + game.fixtures[e].awayTeamName);
+                        resultHomeDiv.append(homeTeam);
+                        resultAwayDiv.append(awayTeam);
+                        col.append(resultHomeDiv);
+                        col.append(resultAwayDiv);
+                        row.append(col);
+                        $('#game-results').append(row);
+                        $("#everyone-titles").append(game_titles);
+                    }
+                }
+
+                $('#weekly-picks-modal').iziModal('open', this); // Do not forget the "this"
+
+            });
+
+        });
+
+    });
 
     ////////// DEALING WITH THE RESPONSE TO CLICKING ON BUTTONS THAT PRODUCE MODALS ///////////
 
@@ -813,10 +890,10 @@ $(document).ready(function() {
         }
     });
 
-    $("#lastWeeksResultsBtn").on('click', function () {
-
-        $('#lastWeek-modal').iziModal('open', this); // Do not forget the "this"
-    });
+    // $("#lastWeeksResultsBtn").on('click', function () {
+    //
+    //     $('#lastWeek-modal').iziModal('open', this); // Do not forget the "this"
+    // });
 
     $("#everyoneBtn").on('click', function () {
 
@@ -860,6 +937,23 @@ $(document).ready(function() {
         bodyOverflow: false,
         autoOpen: false
     });
+
+    $("#weekly-picks-modal").iziModal({
+        title: "Last week's results and picks",
+        subtitle: "Gameweek: " + (gameWeek-1),
+        theme: '',
+        headerColor: '#2a339c',
+        overlayColor: 'rgba(0, 0, 0, 0.4)',
+        iconColor: '',
+        iconClass: null,
+        width: 600,
+        padding: 0,
+        overlayClose: true,
+        closeOnEscape: true,
+        bodyOverflow: false,
+        autoOpen: false
+    });
+
 
 ////////////////////////////////////////////////////////
 // NEWS TOOL
