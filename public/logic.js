@@ -37,7 +37,8 @@ $(document).ready(function() {
         currentUserUid: "",
         thisWeekPick: [],
         totalPoints: 0,
-        fixtures:[]
+        fixtures:[],
+        new_user: false
 
     };
 
@@ -64,7 +65,7 @@ $(document).ready(function() {
     if(gameWeek > 38){
         gameWeek = 39;
     }
-    gameWeek = 5;
+    //gameWeek = 1;
     var seasonOver = false;
 
     if(gameWeek > 38){
@@ -91,8 +92,8 @@ $(document).ready(function() {
 
         $.ajax({
             headers: {'X-Auth-Token': '43d2319104c54b0c9cf2d5679ab2ae5d'},
-            //url: 'https://api.football-data.org/v1/competitions/445/fixtures',
-            url: 'https://api.football-data.org/v1/competitions/426/fixtures',
+            url: 'https://api.football-data.org/v1/competitions/445/fixtures',
+            //url: 'https://api.football-data.org/v1/competitions/426/fixtures',
             dataType: 'json',
             type: 'GET'
         }).done(function (response) {
@@ -111,12 +112,15 @@ $(document).ready(function() {
             $("#picksContainer").append(headRow);
 
             //JUST ADDED
-
+            var first_game = "";
             var index = 0;
             for (var i = 0; i < response.fixtures.length; i++) {
                 //if (response.fixtures[i].matchday === gameWeek && (response.fixtures[i].status === "TIMED" || response.fixtures[i].status === "SCHEDULED")) {
                 //if (response.fixtures[i].matchday === gameWeek && response.fixtures[i].status === "FINISHED") {
                 if (response.fixtures[i].matchday === gameWeek) {
+                    if(index === 0){
+                        first_game = response.fixtures[i].date
+                    }
 
                     matchHolder.push(i);
                     matchToRadio = game.thisWeekPick[gameWeek - 1][index];
@@ -161,7 +165,8 @@ $(document).ready(function() {
 
             // making the last week's results and picks info section (EXAMPLE: SWANSEA 1 - 0 SUNDERLAND /// PICK: SWANSEA)
             for (var e = 0; e < response.fixtures.length; e++) {
-                if ((response.fixtures[e].matchday === gameWeek-1) && (response.fixtures[e].status === "FINISHED" || response.fixtures[e].status === "IN_PLAY")) {
+                // if ((response.fixtures[e].matchday === gameWeek-1) && (response.fixtures[e].status === "FINISHED" || response.fixtures[e].status === "IN_PLAY")) {
+                    if ((response.fixtures[e].matchday === gameWeek-1)) {
                     var game_titles = $("<th style='text-align: center'>");
                     game_titles.append("<p>" + response.fixtures[e].homeTeamName + ": " + response.fixtures[e].result.goalsHomeTeam + "</p>" + "<p> vs </p>" + "<p>" + response.fixtures[e].awayTeamName + ": " + response.fixtures[e].result.goalsAwayTeam + "</p>");
                     $("#everyone-titles").append(game_titles);
@@ -169,8 +174,12 @@ $(document).ready(function() {
             }
 
             /// GETTING TIME REMAINING BEFORE PICK SUBMISSION DEADLINE
-            startTime = moment(new Date(GWArray[x]));
+            //startTime = moment(new Date(GWArray[x]));
+            //console.log("first game: " + first_game);
+            startTime = moment(new Date(first_game));
+            //console.log("start time: " + startTime);
             timeDiff = moment(startTime).diff(moment(), "hours");
+            //console.log("time diff: " + timeDiff);
 
             if (timeDiff < 2) {
                 deadLine = true;
@@ -209,12 +218,15 @@ $(document).ready(function() {
                             resultsLastWeek.push("DRAW");
                         }
                     }
+                    else if((response.fixtures[f].matchday === gameWeek - 1) && (response.fixtures[f].status === "TIMED" || response.fixtures[f].status === "SCHEDULED" || response.fixtures[f].status === "POSTPONED")){
+                        resultsLastWeek.push("NOT STARTED");
+                    }
                 }
 
                 //// SETTING THE RESULTS AS AN ARRAY IN FIREBASE
 
                 $.post("/resultsLastWeek", {resultsLastWeek: resultsLastWeek, gameWeek: gameWeek}, function (data) {
-                    console.log(data);
+                   //console.log(data);
                     updateDatabase();
                 });
             }
@@ -394,7 +406,7 @@ $(document).ready(function() {
                         return r;
                     }, [])
 
-                    console.log(sums);
+                    //console.log(sums);
 
                     var ctx = document.getElementById("canvas").getContext("2d");
                     var myChart = new Chart(ctx, {
@@ -490,7 +502,7 @@ $(document).ready(function() {
 
             var currentUser = firebase.auth().currentUser;
             game.currentUserUid = currentUser.uid;
-            console.log("onAuthStateChanged");
+            //console.log("onAuthStateChanged");
             usersRef.orderByKey().equalTo(game.currentUserUid).once("value", function (snapshot) {
 
                 snapshot.forEach(function (childSnapshot) {
@@ -513,9 +525,56 @@ $(document).ready(function() {
                 $("#lastWeekInfo").css("display","block");
                 $("#team-name").removeClass("hidden");
                 selectedTeams = [];
-                console.log(game.thisWeekPick[gameWeek - 1]);
-                if(game.thisWeekPick[gameWeek - 1] === undefined){
-                    location.reload();
+                //console.log(game.thisWeekPick[gameWeek - 1]);
+                if(game.new_user === true){
+
+                    var picksArray = [];
+                    var picksPerGameWeek = [];
+
+                    for (var z = 0; z < 10; z++) {
+                        picksPerGameWeek.push("DRAW");
+                    }
+
+                    for (var p = 0; p < 38; p++) {
+
+                        picksArray.push(picksPerGameWeek);
+
+                    }
+
+                    var pointsArray = [];
+                    for (var a = 0; a < 38; a++) {
+                        pointsArray.push(parseInt(0));
+                    }
+                    var monthlyPointsArray = [];
+                    for (var b = 0; b < 10; b++) {
+                        monthlyPointsArray.push(parseInt(0))
+                    }
+                    var gamesPlayedArray = pointsArray;
+
+                    var createUserObject = {
+
+                        email: game.email,
+                        name: game.name,
+                        teamName: game.teamName,
+                        currentUserUid: game.currentUserUid,
+                        picksArray: picksArray, //// picksArray = [[undefined,undefined,...,undefined],[undefined,undefined,...,undefined], etc]
+                        pointsArray: pointsArray, //// pointsArray = [0,0,0,0,...,0] 38 gameweeks, so 38 weekly points
+                        gamesPlayedArray: gamesPlayedArray, //// TO COUNT HOW MANY GAMES A USER HAS PLAYED
+                        monthlyPoints: monthlyPointsArray, //// 0 = August, 1 = , September, etc...
+                        totalPoints: 0,
+                        totalGamesPlayed: 0
+
+                    };
+
+                    $.post("/createUser", createUserObject, function (data) {
+                        //console.log("createUser post successful");
+                        makePicksTable();
+                        game.new_user = false;
+                        location.reload();
+                        //console.log(data);
+                    });
+
+
                 }else{
                     makePicksTable();
                 }
@@ -630,7 +689,7 @@ $(document).ready(function() {
         };
 
         $.post("/submitPicks", submitInfo, function (data) {
-            console.log(data);
+            console.log("picks submitted!");
 
         });
 
@@ -690,49 +749,8 @@ $(document).ready(function() {
                 $('#modal-custom').iziModal('toggle');
                 var currentUser = firebase.auth().currentUser;
                 game.currentUserUid = currentUser.uid;
-                var picksArray = [];
-                var picksPerGameWeek = [];
+                game.new_user = true
 
-                for (var z = 0; z < 10; z++) {
-                    picksPerGameWeek.push("DRAW");
-                }
-
-                for (var p = 0; p < 38; p++) {
-
-                    picksArray.push(picksPerGameWeek);
-
-                }
-
-                var pointsArray = [];
-                for (var a = 0; a < 38; a++) {
-                    pointsArray.push(parseInt(0));
-                }
-                var monthlyPointsArray = [];
-                for (var b = 0; b < 10; b++) {
-                    monthlyPointsArray.push(parseInt(0))
-                }
-                var gamesPlayedArray = pointsArray;
-
-                var createUserObject = {
-
-                    email: game.email,
-                    name: game.name,
-                    teamName: game.teamName,
-                    currentUserUid: game.currentUserUid,
-                    picksArray: picksArray, //// picksArray = [[undefined,undefined,...,undefined],[undefined,undefined,...,undefined], etc]
-                    pointsArray: pointsArray, //// pointsArray = [0,0,0,0,...,0] 38 gameweeks, so 38 weekly points
-                    gamesPlayedArray: gamesPlayedArray, //// TO COUNT HOW MANY GAMES A USER HAS PLAYED
-                    monthlyPoints: monthlyPointsArray, //// 0 = August, 1 = , September, etc...
-                    totalPoints: 0,
-                    totalGamesPlayed: 0
-
-                };
-
-                $.post("/createUser", createUserObject, function (data) {
-                    console.log("createUser post successful");
-                    return console.log(data);
-
-                });
             }).catch(function (error) {
 
                 if (error) {
@@ -824,6 +842,7 @@ $(document).ready(function() {
     $(document).on("click", ".weekly_pick", function(event){
 
         var value = parseInt($(this).attr("value"));
+        $("#weekly_title").html("Gameweek " + (value+1) + " results");
 
         $('#game-results').empty();
         $("#yourPicks").empty();
@@ -835,7 +854,7 @@ $(document).ready(function() {
 
             snapshot.forEach(function (childSnapshot) {
 
-                console.log(childSnapshot.val().picksPerGameWeek[value]);
+                //console.log(childSnapshot.val().picksPerGameWeek[value]);
 
                 for (var l = 0; l < childSnapshot.val().picksPerGameWeek[value].length; l++) {
 
@@ -871,6 +890,8 @@ $(document).ready(function() {
                         $("#everyone-titles").append(game_titles);
                     }
                 }
+
+
 
                 $('#weekly-picks-modal').iziModal('open', this); // Do not forget the "this"
 
@@ -939,8 +960,8 @@ $(document).ready(function() {
     });
 
     $("#weekly-picks-modal").iziModal({
-        title: "Last week's results and picks",
-        subtitle: "Gameweek: " + (gameWeek-1),
+        title: "Weekly results and picks",
+        subtitle: "",
         theme: '',
         headerColor: '#2a339c',
         overlayColor: 'rgba(0, 0, 0, 0.4)',
