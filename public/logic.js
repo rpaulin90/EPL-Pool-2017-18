@@ -568,7 +568,7 @@ $(document).ready(function() {
 
                     $.post("/createUser", createUserObject, function (data) {
                         //console.log("createUser post successful");
-                        makePicksTable();
+                        //makePicksTable();
                         game.new_user = false;
                         location.reload();
                         //console.log(data);
