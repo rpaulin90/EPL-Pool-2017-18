@@ -68,16 +68,85 @@ $(document).ready(function() {
     //gameWeek = 1;
     var seasonOver = false;
 
-    if(gameWeek > 38){
-        seasonOver = true;
-    }
-
-    var startTime;
-    var deadLine = false;
     var selectedTeams = [];
 
     //var incompleteSelection = false;
     var resultsLastWeek = [];
+
+    /// GETTING TIME REMAINING BEFORE PICK SUBMISSION DEADLINE
+    var startTime = moment(new Date(GWArray[x]));
+    //console.log("first game: " + first_game);
+    //startTime = moment(new Date(first_game));
+    //console.log("start time: " + startTime);
+    //console.log("time to 10 am: " + moment("07/30/2017").diff(moment(), "hours"));
+    //timeDiff = moment(startTime).diff(moment(), "hours");
+    timeDiff = moment(startTime).diff(moment(), "seconds");
+    //console.log("time diff: " + timeDiff);
+    var currentTime = Date.parse(new Date());
+    var deadline = new Date(currentTime + timeDiff*1000);
+
+    var getTimeRemaining = function(endtime){
+
+        //time remaining in milliseconds between now and the end
+        var t = Date.parse(endtime) - Date.parse(new Date());
+
+        var hours = Math.floor(t/1000/60/60);
+
+        //convert milliseconds to minutes. Whatever is cut out from using the floor method, will be displayed in seconds
+        var minutes = Math.floor((t/1000/60)%60);
+
+        //convert milliseconds remaining to seconds
+        var seconds = Math.floor((t/1000)%60);
+
+        //make a reusable object that give us easy access to the values of minutes and seconds at any point in time
+        return {
+
+            "total": t,
+            "hours": hours,
+            "minutes": minutes,
+            "seconds": seconds
+
+        };
+
+    };
+
+    var timeInterval;
+
+    var startTimer = function(id,endtime){
+
+        function updateClock(){
+            var time = getTimeRemaining(endtime);
+
+            $(id).html("Time remaining (hr:min:sec): " + time.hours + ":" + ('0' + time.minutes).slice(-2)+ ":" + ('0'+time.seconds).slice(-2));
+
+            if(time.total <= 0){
+                location.reload();
+            }
+        }
+
+        updateClock();
+
+        timeInterval = setInterval(updateClock,1000);
+
+    };
+
+    startTimer("#time-remaining",deadline);
+
+    // if (timeDiff < 2) {
+    //     deadLine = true;
+    // }
+    // else {
+    //     // JUST ADDED
+    //     if(seasonOver === true){
+    //         $("#time-remaining").html("The season is over but we'll be back soon!");
+    //     }
+    //     else {
+    //         $("#time-remaining").html("Time remaining: " + timeDiff + " hours");
+    //
+    //         deadLine = false;
+    //     }
+    // }
+
 
 
 
@@ -174,28 +243,28 @@ $(document).ready(function() {
             }
 
             /// GETTING TIME REMAINING BEFORE PICK SUBMISSION DEADLINE
-            startTime = moment(new Date(GWArray[x]));
+            //startTime = moment(new Date(GWArray[x]));
             //console.log("first game: " + first_game);
             //startTime = moment(new Date(first_game));
             //console.log("start time: " + startTime);
             //console.log("time to 10 am: " + moment("07/30/2017").diff(moment(), "hours"));
-            timeDiff = moment(startTime).diff(moment(), "hours");
-            //console.log("time diff: " + timeDiff);
+            //timeDiff = moment(startTime).diff(moment(), "hours");
 
-            if (timeDiff < 2) {
-                deadLine = true;
-            }
-            else {
-                // JUST ADDED
-                if(seasonOver === true){
-                    $("#time-remaining").html("The season is over but we'll be back soon!");
-                }
-                else {
-                    $("#time-remaining").html("Time remaining: " + timeDiff + " hours");
 
-                    deadLine = false;
-                }
-            }
+            // if (timeDiff < 2) {
+            //     deadLine = true;
+            // }
+            // else {
+            //     // JUST ADDED
+            //     if(seasonOver === true){
+            //         $("#time-remaining").html("The season is over but we'll be back soon!");
+            //     }
+            //     else {
+            //         $("#time-remaining").html("Time remaining: " + timeDiff + " hours");
+            //
+            //         deadLine = false;
+            //     }
+            // }
 
             // OBTAINING RESULTS FROM LAST WEEK (E.G. DETERMINE WHO WON OR IF IT WAS A DRAW)
 
