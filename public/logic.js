@@ -174,10 +174,11 @@ $(document).ready(function() {
             }
 
             /// GETTING TIME REMAINING BEFORE PICK SUBMISSION DEADLINE
-            //startTime = moment(new Date(GWArray[x]));
+            startTime = moment(new Date(GWArray[x]));
             //console.log("first game: " + first_game);
-            startTime = moment(new Date(first_game));
+            //startTime = moment(new Date(first_game));
             //console.log("start time: " + startTime);
+            //console.log("time to 10 am: " + moment("07/30/2017").diff(moment(), "hours"));
             timeDiff = moment(startTime).diff(moment(), "hours");
             //console.log("time diff: " + timeDiff);
 
