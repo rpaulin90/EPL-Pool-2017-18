@@ -4,6 +4,8 @@
 
 $(document).ready(function() {
 
+    console.log("Hello there! If you would like to help me improve this page please email me at rpaulin1990@gmail.com");
+
     //// INITIALIZE FIREBASE
     var config = {
         apiKey: "AIzaSyBZ1EkdljPhyKZPccbmlsqZxU2bkmqvQnI",
@@ -45,9 +47,8 @@ $(document).ready(function() {
 
 ///////// OBTAINING CURRENT GAMEWEEK ///////////
 
-    var GWArray = ["08/11/2017", "08/13/2017", "08/19/2017", "08/21/2017", "08/26/2017", "08/27/2017", "09/09/2017", "09/11/2017", "09/15/2017", "09/17/2017", "09/23/2017", "09/25/2017", "09/30/2017", "10/01/2017", "10/14/2017", "10/14/2017", "10/21/2017", "10/21/2017", "10/28/2017", "10/28/2017", "11/04/2017", "11/05/2017", "11/18/2017", "11/18/2017", "11/25/2017", "11/26/2017", "11/28/2017", "11/29/2017", "12/02/2017", "12/02/2017", "12/09/2017", "12/10/2017", "12/12/2017", "12/13/2017", "12/16/2017", "12/16/2017", "12/23/2017", "12/23/2017", "12/26/2017", "12/26/2017", "12/30/2017", "12/30/2017", "01/01/2018", "01/01/2018", "01/13/2018", "01/13/2018", "01/20/2018", "01/20/2018", "01/30/2018", "01/31/2018", "02/03/2018", "02/03/2018", "02/10/2018", "02/10/2018", "02/24/2018", "02/24/2018", "03/03/2018", "03/03/2018", "03/10/2018", "03/10/2018", "03/17/2018", "03/17/2018", "03/31/2018", "03/31/2018", "04/07/2018", "04/07/2018", "04/14/2018", "04/14/2018", "04/21/2018", "04/21/2018", "04/28/2018", "04/28/2018", "05/05/2018","05/05/2018", "05/13/2018", "05/13/2018"];
+    var GWArray = ["2017-08-11T18:45:00Z", "08/13/2017", "2017-08-19T11:30:00Z", "08/21/2017", "2017-08-26T11:30:00Z", "08/27/2017", "2017-09-09T11:30:00Z", "09/11/2017", "2017-09-15T19:00:00Z", "09/17/2017", "2017-09-23T11:30:00Z", "09/25/2017", "2017-09-30T11:30:00Z", "10/01/2017", "2017-10-14T14:00:00Z", "10/14/2017", "2017-10-21T14:00:00Z", "10/21/2017", "2017-10-28T14:00:00Z", "10/28/2017", "2017-11-04T15:00:00Z", "11/05/2017", "2017-11-18T15:00:00Z", "11/18/2017", "2017-11-25T15:00:00Z", "11/26/2017", "2017-11-28T19:45:00Z", "11/29/2017", "2017-12-02T15:00:00Z", "12/02/2017", "2017-12-09T15:00:00Z", "12/10/2017", "2017-12-12T19:45:00Z", "12/13/2017", "2017-12-16T15:00:00Z", "12/16/2017", "2017-12-23T15:00:00Z", "12/23/2017", "2017-12-26T15:00:00Z", "12/26/2017", "2017-12-30T15:00:00Z", "12/30/2017", "2018-01-01T15:00:00Z", "01/01/2018", "2018-01-13T15:00:00Z", "01/13/2018", "2018-01-20T15:00:00Z", "01/20/2018", "2018-01-30T19:45:00Z", "01/31/2018", "2018-02-03T15:00:00Z", "02/03/2018", "2018-02-10T15:00:00Z", "02/10/2018", "2018-02-24T15:00:00Z", "02/24/2018", "2018-03-03T15:00:00Z", "03/03/2018", "2018-03-10T15:00:00Z", "03/10/2018", "2018-03-17T15:00:00Z", "03/17/2018", "2018-03-31T14:00:00Z", "03/31/2018", "2018-04-07T14:00:00Z", "04/07/2018", "2018-04-14T14:00:00Z", "04/14/2018", "2018-04-21T14:00:00Z", "04/21/2018", "2018-04-28T14:00:00Z", "04/28/2018", "2018-05-05T14:00:00Z","05/05/2018", "2018-05-13T14:00:00Z", "05/13/2018"];
 
-    //var GWArray = ["06/12/2017"];
 
     currentDate = moment().format('LT');
     currentTime = moment().format('l');
@@ -55,7 +56,7 @@ $(document).ready(function() {
     var x = 0;
     var convertedDate = moment(new Date(GWArray[x]));
 
-    while (moment(convertedDate).diff(moment(), "hours") <= 0) {
+    while (moment(convertedDate).diff(moment(), "seconds") <= 0) {
         x += 2;
         convertedDate = moment(new Date(GWArray[x]));
     }
@@ -74,63 +75,59 @@ $(document).ready(function() {
     var resultsLastWeek = [];
 
     /// GETTING TIME REMAINING BEFORE PICK SUBMISSION DEADLINE
-    var startTime = moment(new Date(GWArray[x]));
-    //console.log("first game: " + first_game);
-    //startTime = moment(new Date(first_game));
-    //console.log("start time: " + startTime);
-    //console.log("time to 10 am: " + moment("07/30/2017").diff(moment(), "hours"));
-    //timeDiff = moment(startTime).diff(moment(), "hours");
-    timeDiff = moment(startTime).diff(moment(), "seconds");
-    //console.log("time diff: " + timeDiff);
-    var currentTime = Date.parse(new Date());
-    var deadline = new Date(currentTime + timeDiff*1000);
-
-    var getTimeRemaining = function(endtime){
-
-        //time remaining in milliseconds between now and the end
-        var t = Date.parse(endtime) - Date.parse(new Date());
-
-        var hours = Math.floor(t/1000/60/60);
-
-        //convert milliseconds to minutes. Whatever is cut out from using the floor method, will be displayed in seconds
-        var minutes = Math.floor((t/1000/60)%60);
-
-        //convert milliseconds remaining to seconds
-        var seconds = Math.floor((t/1000)%60);
-
-        //make a reusable object that give us easy access to the values of minutes and seconds at any point in time
-        return {
-
-            "total": t,
-            "hours": hours,
-            "minutes": minutes,
-            "seconds": seconds
-
-        };
-
-    };
-
-    var timeInterval;
-
-    var startTimer = function(id,endtime){
-
-        function updateClock(){
-            var time = getTimeRemaining(endtime);
-
-            $(id).html("Time remaining (hr:min:sec): " + time.hours + ":" + ('0' + time.minutes).slice(-2)+ ":" + ('0'+time.seconds).slice(-2));
-
-            if(time.total <= 0){
-                location.reload();
-            }
-        }
-
-        updateClock();
-
-        timeInterval = setInterval(updateClock,1000);
-
-    };
-
-    startTimer("#time-remaining",deadline);
+    // var startTime = moment(new Date(GWArray[x]));
+    //
+    // timeDiff = moment(startTime).diff(moment(), "seconds");
+    //
+    // var currentTime = Date.parse(new Date());
+    // var deadline = new Date(currentTime + timeDiff*1000);
+    //
+    // var getTimeRemaining = function(endtime){
+    //
+    //     //time remaining in milliseconds between now and the end
+    //     var t = Date.parse(endtime) - Date.parse(new Date());
+    //
+    //     var hours = Math.floor(t/1000/60/60);
+    //
+    //     //convert milliseconds to minutes. Whatever is cut out from using the floor method, will be displayed in seconds
+    //     var minutes = Math.floor((t/1000/60)%60);
+    //
+    //     //convert milliseconds remaining to seconds
+    //     var seconds = Math.floor((t/1000)%60);
+    //
+    //     //make a reusable object that give us easy access to the values of minutes and seconds at any point in time
+    //     return {
+    //
+    //         "total": t,
+    //         "hours": hours,
+    //         "minutes": minutes,
+    //         "seconds": seconds
+    //
+    //     };
+    //
+    // };
+    //
+    // var timeInterval;
+    //
+    // var startTimer = function(id,endtime){
+    //
+    //     function updateClock(){
+    //         var time = getTimeRemaining(endtime);
+    //
+    //         $(id).html("Time remaining (hr:min:sec): " + time.hours + ":" + ('0' + time.minutes).slice(-2)+ ":" + ('0'+time.seconds).slice(-2));
+    //
+    //         if(time.total <= 0){
+    //             location.reload();
+    //         }
+    //     }
+    //
+    //     updateClock();
+    //
+    //     timeInterval = setInterval(updateClock,1000);
+    //
+    // };
+    //
+    // startTimer("#time-remaining",deadline);
 
     // if (timeDiff < 2) {
     //     deadLine = true;
@@ -243,28 +240,64 @@ $(document).ready(function() {
             }
 
             /// GETTING TIME REMAINING BEFORE PICK SUBMISSION DEADLINE
-            //startTime = moment(new Date(GWArray[x]));
+            var startTime = moment(new Date(first_game));
             //console.log("first game: " + first_game);
             //startTime = moment(new Date(first_game));
             //console.log("start time: " + startTime);
             //console.log("time to 10 am: " + moment("07/30/2017").diff(moment(), "hours"));
             //timeDiff = moment(startTime).diff(moment(), "hours");
+            timeDiff = moment(startTime).diff(moment(), "seconds");
+            //console.log("time diff: " + timeDiff);
+            var currentTime = Date.parse(new Date());
+            var deadline = new Date(currentTime + timeDiff*1000);
 
+            var getTimeRemaining = function(endtime){
 
-            // if (timeDiff < 2) {
-            //     deadLine = true;
-            // }
-            // else {
-            //     // JUST ADDED
-            //     if(seasonOver === true){
-            //         $("#time-remaining").html("The season is over but we'll be back soon!");
-            //     }
-            //     else {
-            //         $("#time-remaining").html("Time remaining: " + timeDiff + " hours");
-            //
-            //         deadLine = false;
-            //     }
-            // }
+                //time remaining in milliseconds between now and the end
+                var t = Date.parse(endtime) - Date.parse(new Date());
+
+                var hours = Math.floor(t/1000/60/60);
+
+                //convert milliseconds to minutes. Whatever is cut out from using the floor method, will be displayed in seconds
+                var minutes = Math.floor((t/1000/60)%60);
+
+                //convert milliseconds remaining to seconds
+                var seconds = Math.floor((t/1000)%60);
+
+                //make a reusable object that give us easy access to the values of minutes and seconds at any point in time
+                return {
+
+                    "total": t,
+                    "hours": hours,
+                    "minutes": minutes,
+                    "seconds": seconds
+
+                };
+
+            };
+
+            var timeInterval;
+
+            var startTimer = function(id,endtime){
+
+                function updateClock(){
+                    var time = getTimeRemaining(endtime);
+
+                    $(id).html("Time remaining (hr:min:sec): " + time.hours + ":" + ('0' + time.minutes).slice(-2)+ ":" + ('0'+time.seconds).slice(-2));
+
+                    if(time.total <= 0){
+                        location.reload();
+                    }
+                }
+
+                updateClock();
+
+                timeInterval = setInterval(updateClock,1000);
+
+            };
+
+            startTimer("#time-remaining",deadline);
+
 
             // OBTAINING RESULTS FROM LAST WEEK (E.G. DETERMINE WHO WON OR IF IT WAS A DRAW)
 
