@@ -45,6 +45,7 @@ var db = admin.database();
 var refAdmin = db.ref();
 var usersRefAdmin = refAdmin.child("users");
 var resultsRefAdmin = refAdmin.child("results");
+var chatRefAdmin = refAdmin.child("chat");
 
 /////////// ADMIN STUFF ////////////
 
@@ -220,6 +221,15 @@ module.exports = function(app) {
             [req.body.databaseGameWeek]: req.body.selectedTeams
         });
         res.json(req.body);
+    });
+
+    //CHAT STUFF
+
+    app.post("/sendMessage",function(req,res) {
+        chatRefAdmin.push(
+            req.body
+        );
+        res.send("sent message");
     });
 
     app.post("/createUser",function(req,res) {

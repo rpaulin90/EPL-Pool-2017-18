@@ -21,6 +21,8 @@ $(document).ready(function() {
 /// THIS WILL HELP US GET THE KEYS AND VALUES OF EACH USER
     var usersRef = database.ref().child("users");
 
+    var chatRef = database.ref().child("chat");
+
     //var resultsRef = database.ref().child("results");
 
 // INITIALIZE DROPDOWN
@@ -932,6 +934,48 @@ $(document).ready(function() {
 
     });
 
+    /// CHAT LOGIC
+
+
+    $(document).on("click","#send",function(event) {
+        event.preventDefault();
+
+        var message = $("#chatInput").val();
+        //console.log(message);
+
+        $("#chatInput").val("");
+
+        // chatRef.push({
+        //     message: message,
+        //     name: game.name,
+        //     date: moment().format("dddd, MMMM Do YYYY, h:mm:ss a")
+        // });
+
+        var messageInfo = {
+            message: message,
+            name: game.name,
+            date: moment().format("dddd, MMMM Do YYYY, h:mm:ss a")
+        }
+
+        $.post("/sendMessage", messageInfo, function (data) {
+            console.log("message sent!");
+
+        });
+
+    });
+
+
+    chatRef.orderByKey().on("child_added",function(snapshot) {
+
+        var sender = $("<p style='color: #2196f3'>").html(snapshot.val().name + ":");
+        var newMessage = $("<p>").html(snapshot.val().message);
+
+        $("#chat-content").append(sender);
+        $("#chat-content").append(newMessage);
+
+        $("#chat-content").scrollTop($("#chat-content")[0].scrollHeight);
+    });
+
     ////////// DEALING WITH THE RESPONSE TO CLICKING ON BUTTONS THAT PRODUCE MODALS ///////////
 
     $("#pointsGraph").on("click",function(){
@@ -950,6 +994,15 @@ $(document).ready(function() {
     $("#everyoneBtn").on('click', function () {
 
         window.open('/all_current_picks', '_blank');
+
+    });
+
+    $("#chatBtn").on('click', function () {
+
+        $('#chat-modal').iziModal('open', this); // Do not forget the "this"
+
+        $("#chat-content").scrollTop($("#chat-content")[0].scrollHeight);
+
 
     });
 
@@ -990,11 +1043,27 @@ $(document).ready(function() {
         autoOpen: false
     });
 
+    $("#chat-modal").iziModal({
+        title: "Message Board",
+        //subtitle: "Gam",
+        theme: '',
+        headerColor: '#1fa13b',
+        overlayColor: 'rgba(0, 0, 0, 0.4)',
+        iconColor: '',
+        iconClass: null,
+        width: 600,
+        padding: 0,
+        overlayClose: true,
+        closeOnEscape: true,
+        bodyOverflow: false,
+        autoOpen: false
+    });
+
     $("#weekly-picks-modal").iziModal({
         title: "Weekly results and picks",
         subtitle: "",
         theme: '',
-        headerColor: '#2a339c',
+        headerColor: '#1fa13b',
         overlayColor: 'rgba(0, 0, 0, 0.4)',
         iconColor: '',
         iconClass: null,
@@ -1296,7 +1365,20 @@ $(document).ready(function() {
     function getTeamId(teamName) {
         var teamId;
         $.each(teams, function(index, team) {
-            if (team.name === teamName) {
+
+            if(teamName === "Brighton & Hove Albion"){
+                teamId = "BHAFC";
+                return false;
+            }
+            else if(teamName === "Newcastle United FC"){
+                teamId = "NUFC";
+                return false;
+            }
+            else if(teamName === "Huddersfield Town"){
+                teamId = "HTAFC";
+                return false;
+            }
+            else if (team.name === teamName) {
                 teamId = team.short_name;
                 return false;
             }

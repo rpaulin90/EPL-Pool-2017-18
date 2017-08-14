@@ -58,6 +58,7 @@
             <div id="weekly_picks" class="menu" style="background-color: #767676; color: white">
             </div>
         </div>
+        <div class="item selectable" id="chatBtn">Chat</div>
         <div class="item selectable" id="instructions">Instructions and Contact</div>
         <div class="right menu">
             <div class="ui item selectable" id="signout-btn">Sign out</div>
@@ -215,6 +216,26 @@
                             </tbody>
                         </table>
                     </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- CHAT MODAL -->
+
+<div id="chat-modal">
+    <div class="container">
+        <div class="sixteen wide column">
+            <div class="ui fluid card">
+                <div class="content">
+                    <div id="chat-content" style="height: 250px; width: 100%; background-color: white; margin-bottom:
+                     10px; overflow-y: scroll" class="ui raised text container segment"></div>
+                    <textarea style="width: 100%; height: 60px" name="" id="chatInput" cols="30" rows="10"
+                              placeholder="Write some banter" class="ui segment"></textarea>
+                    <button type="submit" id="send" class="ui button"
+                            style="background-color: #2196f3; color: white;">Send
+                    </button>
                 </div>
             </div>
         </div>
