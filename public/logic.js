@@ -968,6 +968,9 @@ $(document).ready(function() {
     chatRef.orderByKey().on("child_added",function(snapshot) {
 
         var sender = $("<p style='color: #2196f3'>").html(snapshot.val().name + ":");
+        if(snapshot.val().name === game.name){
+            sender = $("<p style='color: #1fa13b'>").html(snapshot.val().name + ":");
+        }
         var newMessage = $("<p>").html(snapshot.val().message);
 
         $("#chat-content").append(sender);
