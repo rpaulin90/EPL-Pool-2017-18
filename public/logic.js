@@ -76,6 +76,7 @@ $(document).ready(function() {
     //var incompleteSelection = false;
     var resultsLastWeek = [];
 
+    var first_game = GWArray[x];
 
 // THIS FUNCTION CREATES A TABLE WITH THE PICK OPTIONS FOR NEXT MATCHDAY
 // WE ALSO OBTAIN ALL NECESSARY INFORMATION FROM THE API TO USE IN OTHER SECTIONS (MODALS)
@@ -107,16 +108,59 @@ $(document).ready(function() {
             headRow.append(headAway);
             $("#picksContainer").append(headRow);
 
+            //// NEW STUFF
+            let sortedFixturesArray = [];
+
+            for (let y = 0; y < response.fixtures.length; y++){
+
+                if (response.fixtures[y].matchday === gameWeek) {
+                    sortedFixturesArray.push(response.fixtures[y]);
+                }
+
+            }
+
+            let compare = function (a,b) {
+                if (a._links.self.href < b._links.self.href)
+                    return -1;
+                if (a._links.self.href > b._links.self.href)
+                    return 1;
+                return 0;
+            }
+
+            sortedFixturesArray.sort(compare);
+
+            console.log('sortedFixturesArray: ');
+            console.log(sortedFixturesArray);
+
+            /// NEW STUFF
+
+            let sortedArrayResults = [];
+
+            for (var f = 0; f < response.fixtures.length; f++) {
+
+                if ((response.fixtures[f].matchday === gameWeek - 1)) {
+
+                    sortedArrayResults.push(response.fixtures[f]);
+
+                }
+            }
+
+            sortedArrayResults.sort(compare);
+            console.log("sortedArrayResults: ");
+            console.log(sortedArrayResults);
+
             //JUST ADDED
-            var first_game = "";
+            //var first_game = "";
             var index = 0;
-            for (var i = 0; i < response.fixtures.length; i++) {
+            //for (var i = 0; i < response.fixtures.length; i++) {
+            for (var i = 0; i < sortedFixturesArray.length; i++) {
                 //if (response.fixtures[i].matchday === gameWeek && (response.fixtures[i].status === "TIMED" || response.fixtures[i].status === "SCHEDULED")) {
                 //if (response.fixtures[i].matchday === gameWeek && response.fixtures[i].status === "FINISHED") {
-                if (response.fixtures[i].matchday === gameWeek) {
-                    if(index === 0){
-                        first_game = response.fixtures[i].date
-                    }
+                // if (response.fixtures[i].matchday === gameWeek) {
+                //     if(index === 0){
+                //         first_game = response.fixtures[i].date
+                //     }
+
 
                     matchHolder.push(i);
                     matchToRadio = game.thisWeekPick[gameWeek - 1][index];
@@ -124,7 +168,8 @@ $(document).ready(function() {
                     var newRow = $('<tr class="radio-group">');
                     var newColumn;
 
-                    var value = response.fixtures[matchHolder[matchHolder.length - 1]].homeTeamName;
+                    //var value = response.fixtures[matchHolder[matchHolder.length - 1]].homeTeamName;
+                    var value = sortedFixturesArray[matchHolder[matchHolder.length - 1]].homeTeamName;
 
                     newColumn = $('<td class="radio six wide center aligned" value="' + value + '" name="' + index + '">' + value + '</td>');
                     if (value === matchToRadio) {
@@ -137,7 +182,8 @@ $(document).ready(function() {
                         newColumn.addClass('selected');
                     }
                     newRow.append(newColumn);
-                    value = response.fixtures[matchHolder[matchHolder.length - 1]].awayTeamName;
+                    //value = response.fixtures[matchHolder[matchHolder.length - 1]].awayTeamName;
+                    value = sortedFixturesArray[matchHolder[matchHolder.length - 1]].awayTeamName;
                     newColumn = $('<td class="radio six wide center aligned" value="' + value + '" name="' + index + '">' + value + '</td>');
                     if (value === matchToRadio) {
                         newColumn.addClass('selected');
@@ -148,7 +194,7 @@ $(document).ready(function() {
                     index++;
 
                     $("#picksContainer").append(newRow);
-                }
+                //}
             }
 
             $('#picksContainer .radio-group .radio').click(function(){
@@ -160,13 +206,14 @@ $(document).ready(function() {
             $("#loader").addClass("hidden");
 
             // making the last week's results and picks info section (EXAMPLE: SWANSEA 1 - 0 SUNDERLAND /// PICK: SWANSEA)
-            for (var e = 0; e < response.fixtures.length; e++) {
+            //for (var e = 0; e < response.fixtures.length; e++) {
+            for (var e = 0; e < sortedArrayResults.length; e++) {
                 // if ((response.fixtures[e].matchday === gameWeek-1) && (response.fixtures[e].status === "FINISHED" || response.fixtures[e].status === "IN_PLAY")) {
-                    if ((response.fixtures[e].matchday === gameWeek-1)) {
+                    //if ((response.fixtures[e].matchday === gameWeek-1)) {
                     var game_titles = $("<th style='text-align: center'>");
-                    game_titles.append("<p>" + response.fixtures[e].homeTeamName + ": " + response.fixtures[e].result.goalsHomeTeam + "</p>" + "<p> vs </p>" + "<p>" + response.fixtures[e].awayTeamName + ": " + response.fixtures[e].result.goalsAwayTeam + "</p>");
+                    game_titles.append("<p>" + sortedArrayResults[e].homeTeamName + ": " + sortedArrayResults[e].result.goalsHomeTeam + "</p>" + "<p> vs </p>" + "<p>" + sortedArrayResults[e].awayTeamName + ": " + sortedArrayResults[e].result.goalsAwayTeam + "</p>");
                     $("#everyone-titles").append(game_titles);
-                }
+                //}
             }
 
             /// GETTING TIME REMAINING BEFORE PICK SUBMISSION DEADLINE
@@ -233,25 +280,27 @@ $(document).ready(function() {
 
             if(gameWeek !== 1) {
 
-                for (var f = 0; f < response.fixtures.length; f++) {
-                    if ((response.fixtures[f].matchday === gameWeek - 1) && (response.fixtures[f].status === "FINISHED" || response.fixtures[f].status === "IN_PLAY")) {
+                //for (var f = 0; f < response.fixtures.length; f++) {
+                for (var f = 0; f < sortedArrayResults.length; f++) {
+                    // if ((response.fixtures[f].matchday === gameWeek - 1) && (response.fixtures[f].status === "FINISHED" || response.fixtures[f].status === "IN_PLAY")) {
+                     if (sortedArrayResults[f].status === "FINISHED" || sortedArrayResults[f].status === "IN_PLAY") {
 
                         // IF HOME TEAM WON
-                        if (response.fixtures[f].result.goalsHomeTeam > response.fixtures[f].result.goalsAwayTeam) {
-                            resultsLastWeek.push(response.fixtures[f].homeTeamName);
+                        if (sortedArrayResults[f].result.goalsHomeTeam > sortedArrayResults[f].result.goalsAwayTeam) {
+                            resultsLastWeek.push(sortedArrayResults[f].homeTeamName);
                         }
 
                         // IF AWAY TEAM WON
-                        else if (response.fixtures[f].result.goalsHomeTeam < response.fixtures[f].result.goalsAwayTeam) {
-                            resultsLastWeek.push(response.fixtures[f].awayTeamName);
+                        else if (sortedArrayResults[f].result.goalsHomeTeam < sortedArrayResults[f].result.goalsAwayTeam) {
+                            resultsLastWeek.push(sortedArrayResults[f].awayTeamName);
                         }
 
                         // IF IT WAS A DRAW
-                        else if (response.fixtures[f].result.goalsHomeTeam === response.fixtures[f].result.goalsAwayTeam) {
+                        else if (sortedArrayResults[f].result.goalsHomeTeam === sortedArrayResults[f].result.goalsAwayTeam) {
                             resultsLastWeek.push("DRAW");
                         }
                     }
-                    else if((response.fixtures[f].matchday === gameWeek - 1) && (response.fixtures[f].status === "TIMED" || response.fixtures[f].status === "SCHEDULED" || response.fixtures[f].status === "POSTPONED")){
+                    else if(sortedArrayResults[f].status === "TIMED" || sortedArrayResults[f].status === "SCHEDULED" || sortedArrayResults[f].status === "POSTPONED"){
                         resultsLastWeek.push("NOT STARTED");
                     }
                 }
@@ -901,19 +950,45 @@ $(document).ready(function() {
 
                 }
 
-                for (var e = 0; e < game.fixtures.length; e++) {
-                    if ((game.fixtures[e].matchday === (value+1))) {
+                /// NEW STUFF
+
+                let compare = function (a,b) {
+                    if (a._links.self.href < b._links.self.href)
+                        return -1;
+                    if (a._links.self.href > b._links.self.href)
+                        return 1;
+                    return 0;
+                };
+
+                // THIS ARRAY HOLDS THE RESULTS FOR GAMES LAST WEEK. WE GET THE GAMES CORRESPONDING TO THE GAMEWEEK, THEN WE SORT THEM.
+
+                let sortedArrayWeeklyPoints = [];
+
+                for (let e = 0; e < game.fixtures.length; e++) {
+                    if ((game.fixtures[e].matchday === (value + 1))) {
+                        sortedArrayWeeklyPoints.push(game.fixtures[e])
+                    }
+                }
+
+                sortedArrayWeeklyPoints.sort(compare);
+
+                //for (var e = 0; e < game.fixtures.length; e++) {
+                for (let e = 0; e < sortedArrayWeeklyPoints.length; e++) {
+                    //if ((game.fixtures[e].matchday === (value+1))) {
 
                         var row = $("<tr>");
                         var col = $("<td>");
                         var game_titles = $("<th>");
 
                         var resultHomeDiv = $('<div class="result-cell">');
-                        var homeTeam = $('<span>' + game.fixtures[e].homeTeamName + '</span><span class="right floated"> ' + game.fixtures[e].result.goalsHomeTeam + '</span>');
+                        // var homeTeam = $('<span>' + game.fixtures[e].homeTeamName + '</span><span class="right floated"> ' + game.fixtures[e].result.goalsHomeTeam + '</span>');
+                        var homeTeam = $('<span>' + sortedArrayWeeklyPoints[e].homeTeamName + '</span><span class="right floated"> ' + sortedArrayWeeklyPoints[e].result.goalsHomeTeam + '</span>');
                         var resultAwayDiv = $('<div class="result-cell">');
-                        var awayTeam = $('<span>' + game.fixtures[e].awayTeamName + '</span><span class="right floated"> ' + game.fixtures[e].result.goalsAwayTeam + '</span>');
+                        // var awayTeam = $('<span>' + game.fixtures[e].awayTeamName + '</span><span class="right floated"> ' + game.fixtures[e].result.goalsAwayTeam + '</span>');
+                        var awayTeam = $('<span>' + sortedArrayWeeklyPoints[e].awayTeamName + '</span><span class="right floated"> ' + sortedArrayWeeklyPoints[e].result.goalsAwayTeam + '</span>');
 
-                        game_titles.append(game.fixtures[e].homeTeamName + " vs " + game.fixtures[e].awayTeamName);
+                        //game_titles.append(game.fixtures[e].homeTeamName + " vs " + game.fixtures[e].awayTeamName);
+                        game_titles.append(sortedArrayWeeklyPoints[e].homeTeamName + " vs " + sortedArrayWeeklyPoints[e].awayTeamName);
                         resultHomeDiv.append(homeTeam);
                         resultAwayDiv.append(awayTeam);
                         col.append(resultHomeDiv);
@@ -921,7 +996,7 @@ $(document).ready(function() {
                         row.append(col);
                         $('#game-results').append(row);
                         $("#everyone-titles").append(game_titles);
-                    }
+                    //}
                 }
 
 
