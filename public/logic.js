@@ -49,7 +49,7 @@ $(document).ready(function() {
 
 ///////// OBTAINING CURRENT GAMEWEEK ///////////
 
-    var GWArray = ["2017-08-11T18:45:00Z", "08/13/2017", "2017-08-19T11:30:00Z", "08/21/2017", "2017-08-26T11:30:00Z", "08/27/2017", "2017-09-09T11:30:00Z", "09/11/2017", "2017-09-15T19:00:00Z", "09/17/2017", "2017-09-23T11:30:00Z", "09/25/2017", "2017-09-30T11:30:00Z", "10/01/2017", "2017-10-14T14:00:00Z", "10/14/2017", "2017-10-21T14:00:00Z", "10/21/2017", "2017-10-28T14:00:00Z", "10/28/2017", "2017-11-04T15:00:00Z", "11/05/2017", "2017-11-18T15:00:00Z", "11/18/2017", "2017-11-25T15:00:00Z", "11/26/2017", "2017-11-28T19:45:00Z", "11/29/2017", "2017-12-02T15:00:00Z", "12/02/2017", "2017-12-09T15:00:00Z", "12/10/2017", "2017-12-12T19:45:00Z", "12/13/2017", "2017-12-16T15:00:00Z", "12/16/2017", "2017-12-23T15:00:00Z", "12/23/2017", "2017-12-26T15:00:00Z", "12/26/2017", "2017-12-30T15:00:00Z", "12/30/2017", "2018-01-01T15:00:00Z", "01/01/2018", "2018-01-13T15:00:00Z", "01/13/2018", "2018-01-20T15:00:00Z", "01/20/2018", "2018-01-30T19:45:00Z", "01/31/2018", "2018-02-03T15:00:00Z", "02/03/2018", "2018-02-10T15:00:00Z", "02/10/2018", "2018-02-24T15:00:00Z", "02/24/2018", "2018-03-03T15:00:00Z", "03/03/2018", "2018-03-10T15:00:00Z", "03/10/2018", "2018-03-17T15:00:00Z", "03/17/2018", "2018-03-31T14:00:00Z", "03/31/2018", "2018-04-07T14:00:00Z", "04/07/2018", "2018-04-14T14:00:00Z", "04/14/2018", "2018-04-21T14:00:00Z", "04/21/2018", "2018-04-28T14:00:00Z", "04/28/2018", "2018-05-05T14:00:00Z","05/05/2018", "2018-05-13T14:00:00Z", "05/13/2018"];
+    var GWArray = ["2017-08-11T18:45:00Z", "08/13/2017", "2017-08-19T11:30:00Z", "08/21/2017", "2017-08-26T11:30:00Z", "08/27/2017", "2017-09-09T11:30:00Z", "09/11/2017", "2017-09-15T19:00:00Z", "09/17/2017", "2017-09-23T11:30:00Z", "09/25/2017", "2017-09-30T11:30:00Z", "10/01/2017", "2017-10-14T14:00:00Z", "10/16/2017", "2017-10-20T14:00:00Z", "10/23/2017", "2017-10-28T14:00:00Z", "10/30/2017", "2017-11-04T15:00:00Z", "11/05/2017", "2017-11-18T15:00:00Z", "11/20/2017", "2017-11-24T15:00:00Z", "11/26/2017", "2017-11-28T19:45:00Z", "11/29/2017", "2017-12-02T15:00:00Z", "12/02/2017", "2017-12-09T15:00:00Z", "12/10/2017", "2017-12-12T19:45:00Z", "12/13/2017", "2017-12-16T15:00:00Z", "12/16/2017", "2017-12-23T15:00:00Z", "12/23/2017", "2017-12-26T15:00:00Z", "12/26/2017", "2017-12-30T15:00:00Z", "12/30/2017", "2018-01-01T15:00:00Z", "01/01/2018", "2018-01-13T15:00:00Z", "01/13/2018", "2018-01-20T15:00:00Z", "01/20/2018", "2018-01-30T19:45:00Z", "01/31/2018", "2018-02-03T15:00:00Z", "02/03/2018", "2018-02-10T15:00:00Z", "02/10/2018", "2018-02-24T15:00:00Z", "02/24/2018", "2018-03-03T15:00:00Z", "03/03/2018", "2018-03-10T15:00:00Z", "03/10/2018", "2018-03-17T15:00:00Z", "03/17/2018", "2018-03-31T14:00:00Z", "03/31/2018", "2018-04-07T14:00:00Z", "04/07/2018", "2018-04-14T14:00:00Z", "04/14/2018", "2018-04-21T14:00:00Z", "04/21/2018", "2018-04-28T14:00:00Z", "04/28/2018", "2018-05-05T14:00:00Z","05/05/2018", "2018-05-13T14:00:00Z", "05/13/2018"];
 
 
     currentDate = moment().format('LT');
@@ -129,8 +129,6 @@ $(document).ready(function() {
 
             sortedFixturesArray.sort(compare);
 
-            console.log('sortedFixturesArray: ');
-            console.log(sortedFixturesArray);
 
             /// NEW STUFF
 
@@ -146,8 +144,6 @@ $(document).ready(function() {
             }
 
             sortedArrayResults.sort(compare);
-            console.log("sortedArrayResults: ");
-            console.log(sortedArrayResults);
 
             //JUST ADDED
             //var first_game = "";
@@ -218,13 +214,9 @@ $(document).ready(function() {
 
             /// GETTING TIME REMAINING BEFORE PICK SUBMISSION DEADLINE
             var startTime = moment(new Date(first_game));
-            //console.log("first game: " + first_game);
-            //startTime = moment(new Date(first_game));
-            //console.log("start time: " + startTime);
-            //console.log("time to 10 am: " + moment("07/30/2017").diff(moment(), "hours"));
-            //timeDiff = moment(startTime).diff(moment(), "hours");
+
             timeDiff = moment(startTime).diff(moment(), "seconds");
-            //console.log("time diff: " + timeDiff);
+
             var currentTime = Date.parse(new Date());
             var deadline = new Date(currentTime + timeDiff*1000);
 
@@ -308,7 +300,7 @@ $(document).ready(function() {
                 //// SETTING THE RESULTS AS AN ARRAY IN FIREBASE
 
                 $.post("/resultsLastWeek", {resultsLastWeek: resultsLastWeek, gameWeek: gameWeek}, function (data) {
-                   //console.log(data);
+
                     updateDatabase();
                 });
             }
@@ -362,7 +354,7 @@ $(document).ready(function() {
             var databaseLastGameWeek = (gameWeek - 2).toString();
 
             $.post("/updateDatabase", {databaseLastGameWeek: databaseLastGameWeek,resultsLastWeek: resultsLastWeek}, function (data) {
-                //console.log(data);
+
 
             });
 
@@ -488,7 +480,7 @@ $(document).ready(function() {
                         return r;
                     }, [])
 
-                    //console.log(sums);
+
 
                     var ctx = document.getElementById("canvas").getContext("2d");
                     var myChart = new Chart(ctx, {
@@ -584,7 +576,7 @@ $(document).ready(function() {
 
             var currentUser = firebase.auth().currentUser;
             game.currentUserUid = currentUser.uid;
-            //console.log("onAuthStateChanged");
+
             usersRef.orderByKey().equalTo(game.currentUserUid).once("value", function (snapshot) {
 
                 snapshot.forEach(function (childSnapshot) {
@@ -607,7 +599,7 @@ $(document).ready(function() {
                 $("#lastWeekInfo").css("display","block");
                 $("#team-name").removeClass("hidden");
                 selectedTeams = [];
-                //console.log(game.thisWeekPick[gameWeek - 1]);
+
                 if(game.new_user === true){
 
                     var picksArray = [];
@@ -649,11 +641,10 @@ $(document).ready(function() {
                     };
 
                     $.post("/createUser", createUserObject, function (data) {
-                        //console.log("createUser post successful");
-                        //makePicksTable();
+
                         game.new_user = false;
                         location.reload();
-                        //console.log(data);
+
                     });
 
 
@@ -936,7 +927,7 @@ $(document).ready(function() {
 
             snapshot.forEach(function (childSnapshot) {
 
-                //console.log(childSnapshot.val().picksPerGameWeek[value]);
+
 
                 for (var l = 0; l < childSnapshot.val().picksPerGameWeek[value].length; l++) {
 
@@ -1016,15 +1007,11 @@ $(document).ready(function() {
         event.preventDefault();
 
         var message = $("#chatInput").val();
-        //console.log(message);
+
 
         $("#chatInput").val("");
 
-        // chatRef.push({
-        //     message: message,
-        //     name: game.name,
-        //     date: moment().format("dddd, MMMM Do YYYY, h:mm:ss a")
-        // });
+
 
         var messageInfo = {
             message: message,
@@ -1042,11 +1029,14 @@ $(document).ready(function() {
 
     chatRef.orderByKey().on("child_added",function(snapshot) {
 
-        var sender = $("<p style='color: #2196f3'>").html(snapshot.val().name + ":");
+        var sender = $("<p style='color: #2196f3; margin-top: 10px'>").html(snapshot.val().name + ":");
         if(snapshot.val().name === game.name){
             sender = $("<p style='color: #1fa13b'>").html(snapshot.val().name + ":");
         }
-        var newMessage = $("<p>").html(snapshot.val().message);
+        //var newMessage = $("<p>").html(snapshot.val().message);
+        var newMessage = snapshot.val().message;
+
+        newMessage = newMessage.replace(/\r?\n/g, '<br />');
 
         $("#chat-content").append(sender);
         $("#chat-content").append(newMessage);
@@ -1168,6 +1158,7 @@ $(document).ready(function() {
     var badges = [
         "https://platform-static-files.s3.amazonaws.com/premierleague/badges/t3.svg", // Arsenal
         "https://platform-static-files.s3.amazonaws.com/premierleague/badges/t91.svg", // Bournemouth
+        "https://platform-static-files.s3.amazonaws.com/premierleague/badges/t36.svg", // Brighton
         "https://platform-static-files.s3.amazonaws.com/premierleague/badges/t90.svg", // Burnley
         "https://platform-static-files.s3.amazonaws.com/premierleague/badges/t8.svg", // Chelsea
         "https://platform-static-files.s3.amazonaws.com/premierleague/badges/t31.svg", // Crystal Palace
@@ -1180,13 +1171,14 @@ $(document).ready(function() {
         "https://platform-static-files.s3.amazonaws.com/premierleague/badges/t4.svg", // Newcastle United
         "https://platform-static-files.s3.amazonaws.com/premierleague/badges/t20.svg", // Southampton
         "https://platform-static-files.s3.amazonaws.com/premierleague/badges/t110.svg", // Stoke City
-        "https://platform-static-files.s3.amazonaws.com/premierleague/badges/t36.svg", // Brighton
         "https://platform-static-files.s3.amazonaws.com/premierleague/badges/t80.svg", // Swansea
         "https://platform-static-files.s3.amazonaws.com/premierleague/badges/t6.svg", // Tottenham
         "https://platform-static-files.s3.amazonaws.com/premierleague/badges/t57.svg", // Watford
         "https://platform-static-files.s3.amazonaws.com/premierleague/badges/t35.svg", // West Brom
         "https://platform-static-files.s3.amazonaws.com/premierleague/badges/t21.svg" // West Ham
     ];
+
+
 
     /**
      * Make football-data API call, and once done, get jokecamp JSON. Put all
@@ -1255,10 +1247,7 @@ $(document).ready(function() {
         }
 
         $.each(teams, function(index, team) {
-
             var teamBadge = $('<div class="item" id=' + team.short_name + '><img class="badge-icon" src="' + team.crestUrl + '"></div>');
-
-
 
             $("#club-navbar").append(teamBadge);
             if (team.short_name === "ARS") {
@@ -1284,7 +1273,7 @@ $(document).ready(function() {
      */
     function createTeamsPage(teamId) {
         var teamCode = getTeamCode(teamId);
-        //get team function
+        // get team function
         var contentContainer = $("#content-container");
 
         // INJURIES BOX
@@ -1382,7 +1371,6 @@ $(document).ready(function() {
             td.appendTo(tr);
             $("#table-standings-content").append(tr);
         });
-        $('table').tablesort();
 
         // NEWS
         $("#team-news-content").empty();
@@ -1443,20 +1431,7 @@ $(document).ready(function() {
     function getTeamId(teamName) {
         var teamId;
         $.each(teams, function(index, team) {
-
-            if(teamName === "Brighton & Hove Albion"){
-                teamId = "BHAFC";
-                return false;
-            }
-            else if(teamName === "Newcastle United FC"){
-                teamId = "NUFC";
-                return false;
-            }
-            else if(teamName === "Huddersfield Town"){
-                teamId = "HTAFC";
-                return false;
-            }
-            else if (team.name === teamName) {
+            if (team.name === teamName) {
                 teamId = team.short_name;
                 return false;
             }
@@ -1519,7 +1494,7 @@ $(document).ready(function() {
                 team.tag = ["Palace", "Eagles"];
             } else if (team.short_name === "EVE") {
                 team.tag = ["Everton", "Toffees"];
-            } else if (team.short_name === "HTAFC") {
+            } else if (team.short_name === "HUD") {
                 team.tag = ["Huddersfield", "Huddersfield Town", "Terriers"];
             } else if (team.short_name === "LEI") {
                 team.tag = ["Leicester", "Foxes"];
@@ -1529,13 +1504,13 @@ $(document).ready(function() {
                 team.tag = ["Manchester City", "Citizens"];
             } else if (team.short_name === "MUN") {
                 team.tag = ["Manchester United", "United", "Red Devils"];
-            } else if (team.short_name === "NUFC") {
+            } else if (team.short_name === "NEW") {
                 team.tag = ["Newcastle", "Magpies"];
             } else if (team.short_name === "SOU") {
                 team.tag = ["Southampton", "Saints"];
             } else if (team.short_name === "STK") {
                 team.tag = ["Stoke", "Potters"];
-            } else if (team.short_name === "BHAFC") {
+            } else if (team.short_name === "BHA") {
                 team.tag = ["Brighton", "Seagulls"];
             } else if (team.short_name === "SWA") {
                 team.tag = ["Swansea", "Swans"];
@@ -1550,6 +1525,7 @@ $(document).ready(function() {
             }
         });
     }
+
 
     /**
      * Helper function to get team's tags given the teamId
@@ -1567,3 +1543,4 @@ $(document).ready(function() {
     }
 
 });
+
