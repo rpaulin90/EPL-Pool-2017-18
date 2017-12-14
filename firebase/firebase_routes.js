@@ -110,7 +110,7 @@ module.exports = function(app) {
                         weeklyGamesPlayed++;
                     }
                 }
-                console.log("update 1");
+                // console.log("update 1");
                 usersRefAdmin.child(childSnapshot.key).child("gamesPlayedPerWeek").update({
                     [req.body.databaseLastGameWeek]: weeklyGamesPlayed
                 });
@@ -129,7 +129,7 @@ module.exports = function(app) {
                             weeklyPoints++;
                         }
                     }
-                    console.log("update 2");
+                    // console.log("update 2");
                     usersRefAdmin.child(childSnapshot.key).child("pointsPerGameWeek").update({
                         [req.body.databaseLastGameWeek]: weeklyPoints
                     });
@@ -147,7 +147,7 @@ module.exports = function(app) {
                         for(var t = 0; t < weeklyPointsArray.length; t++){
                             totalGamesPlayed += parseInt(weeklyGamesPlayedArray[t]);
                         }
-                        console.log("update 3");
+                        // console.log("update 3");
                         usersRefAdmin.child(childSnapshot.key).update({
                             totalGamesPlayed: totalGamesPlayed
                         });
@@ -165,7 +165,7 @@ module.exports = function(app) {
                                 totalPoints += parseInt(weeklyPointsArray[t]);
                             }
 
-                            console.log("update 4");
+                            // console.log("update 4");
                             usersRefAdmin.child(childSnapshot.key).update({
                                 totalPointsNegative: -totalPoints,
                                 totalPoints: totalPoints
@@ -184,6 +184,8 @@ module.exports = function(app) {
                                 9: parseInt(weeklyPointsArray[36]) + parseInt(weeklyPointsArray[37])
 
                             });
+
+                            // console.log(childSnapshot.val().name + ": " + childSnapshot.val().monthlyPoints[2])
 
 
                         });
@@ -205,7 +207,7 @@ module.exports = function(app) {
                                         totalPointsNegative: 1000
                                     });
                                 }
-                                console.log("update 5");
+                                // console.log("update 5");
                             });
                             res.json(req.body.databaseLastGameWeek)
                         });
